@@ -79,6 +79,174 @@ nav a {
 .card:hover {
   transform: translateY(-10px);
 }
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tags {
+  display: flex;
+  gap: 8px;
+}
+
+.tag {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+}
+.cultural {
+  background: #e0e7ff;
+  color: #3730a3;
+}
+
+.top {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.aventura {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.popular {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.moderno {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.tendencia {
+  background: #d1fae5;
+  color: #065f46;
+}
+.destinos {
+  display: flex;
+  gap: 30px;
+  padding: 60px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.card {
+  width: 300px;
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  transition: 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+}
+
+.card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.card-content {
+  padding: 20px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.descripcion {
+  margin: 15px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.btn-card {
+  padding: 8px 15px;
+  border: none;
+  background: #0ea5e9;
+  color: white;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-card:hover {
+  background: #0284c7;
+}
+.beneficios {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.beneficios h2 {
+  font-size: 28px;
+  margin-bottom: 40px;
+}
+
+.benefit-container {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.benefit {
+  background: white;
+  padding: 25px;
+  width: 250px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  transition: transform 0.3s;
+}
+
+.benefit:hover {
+  transform: translateY(-5px);
+}
+
+.benefit h3 {
+  margin-bottom: 10px;
+}
+.reviews {
+  text-align: center;
+  padding: 60px 20px;
+  background: #f5f5f5;
+}
+
+.reviews h2 {
+  margin-bottom: 30px;
+  font-size: 28px;
+}
+
+.review {
+  max-width: 600px;
+  margin: auto;
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  font-style: italic;
+}
+
+.review span {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+}
+.footer {
+  background: #0f172a;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
 @media (max-width: 768px) {
   header {
     flex-direction: column;

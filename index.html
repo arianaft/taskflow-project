@@ -6,7 +6,6 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
 <header>
   <h1>TravelDream</h1>
   <nav>
@@ -15,33 +14,113 @@
     <a href="#">Contacto</a>
   </nav>
 </header>
-
 <section class="hero">
   <h2>Descubre el mundo</h2>
   <p>Viaja, explora y vive experiencias únicas</p>
-  <button onclick="mostrarMensaje()">Explorar</button>
+  <button>Explorar</button>
 </section>
-
 <main>
-  <section class="destinos">
-    <div class="card">
+ <section class="destinos">
+
+  <div class="card">
+
+  <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34" alt="París">
+
+  <div class="card-content">
+
+    <div class="card-header">
       <h3>París</h3>
-      <p>La ciudad del amor</p>
+      <div class="tags">
+        <span class="tag cultural">Cultural</span>
+        <span class="tag top">🔥 Top</span>
+      </div>
     </div>
 
-    <div class="card">
+    <p class="descripcion">
+      Descubre monumentos icónicos como la Torre Eiffel y pasea por sus calles llenas de historia.
+    </p>
+
+    <button class="btn-card">Ver más</button>
+
+  </div>
+
+</div>
+
+  <div class="card">
+    <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb" alt="Bali">
+
+  <div class="card-content">
+
+    <div class="card-header">
       <h3>Bali</h3>
-      <p>Paraíso tropical</p>
+      <div class="tags">
+        <span class="tag aventura">Aventura</span>
+        <span class="tag popular">⭐ Popular</span>
+      </div>
     </div>
 
-    <div class="card">
+    <p class="descripcion">
+      Disfruta de playas paradisíacas, templos exóticos y una naturaleza impresionante.
+    </p>
+
+    <button class="btn-card">Ver más</button>
+  </div>
+  </div>
+
+  <div class="card">
+    <img src="https://images.unsplash.com/photo-1549693578-d683be217e58" alt="Tokio">
+
+  <div class="card-content">
+
+    <div class="card-header">
       <h3>Tokio</h3>
-      <p>Modernidad y tradición</p>
+      <div class="tags">
+        <span class="tag moderno">Moderno</span>
+        <span class="tag tendencia">📈 Tendencia</span>
+      </div>
     </div>
-  </section>
+
+    <p class="descripcion">
+      Vive la fusión perfecta entre tradición japonesa y tecnología futurista.
+    </p>
+
+    <button class="btn-card">Ver más</button>
+  </div>
+  </div>
+
+</section>
+<section class="beneficios">
+  <h2>¿Por qué viajar con TravelDream?</h2>
+
+  <div class="benefit-container">
+    <div class="benefit">
+      <h3>✈️ Mejores precios</h3>
+      <p>Ofertas exclusivas y paquetes personalizados.</p>
+    </div>
+
+    <div class="benefit">
+      <h3>🌍 Destinos únicos</h3>
+      <p>Experiencias seleccionadas alrededor del mundo.</p>
+    </div>
+
+    <div class="benefit">
+      <h3>📞 Soporte 24/7</h3>
+      <p>Te acompañamos antes, durante y después del viaje.</p>
+    </div>
+  </div>
+</section>
+<section class="reviews">
+  <h2>Opiniones de viajeros</h2>
+
+  <div class="review">
+    <p>"Una experiencia inolvidable en Bali. Todo perfectamente organizado."</p>
+    <span>- María G.</span>
+  </div>
+</section>
 </main>
-
 <script src="script.js"></script>
-
+<footer class="footer">
+  <p>© 2026 TravelDream | Todos los derechos reservados</p>
+</footer>
 </body>
 </html>
