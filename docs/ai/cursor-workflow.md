@@ -64,3 +64,88 @@ Durante el uso de Cursor utilicé varios atajos de teclado que facilitan la inte
 | Ctrl + F | Buscar texto dentro del documento|
 
 El uso de estos atajos permite trabajar de forma más rápida y aprovechar mejor las funcionalidades de inteligencia artificial integradas en Cursor.
+
+# Conectar servidores MCP en Cursor
+
+## ¿Qué es Model Context Protocol (MCP)?
+
+Model Context Protocol (MCP) es un protocolo que permite a los modelos de inteligencia artificial interactuar con herramientas externas y acceder a información adicional fuera del chat.
+
+Gracias a MCP, la IA puede conectarse a diferentes recursos como el sistema de archivos, repositorios de GitHub, bases de datos o APIs externas. Esto permite que la IA tenga más contexto sobre el proyecto y pueda ayudar de forma más precisa durante el desarrollo.
+
+En lugar de limitarse a analizar el texto que recibe, la IA puede acceder directamente a archivos del proyecto y analizar su contenido.
+
+---
+
+# Instalación de un servidor MCP en Cursor
+
+Para este ejercicio se utilizó el servidor MCP de tipo **filesystem**, que permite a la inteligencia artificial acceder a los archivos del proyecto.
+
+## Paso 1: Abrir la configuración de Cursor
+
+Primero se abrió Cursor y se accedió al menú de configuración.
+
+Ruta:
+
+Settings → Tools & MCP
+
+En esta sección se pueden gestionar los servidores MCP instalados.
+
+---
+
+## Paso 2: Añadir un servidor MCP
+
+Dentro de la sección **Installed MCP Servers**, se seleccionó la opción:
+
+Add Custom MCP
+
+Esto permite añadir un servidor MCP personalizado.
+
+---
+
+## Paso 3: Configurar el servidor filesystem
+
+Se añadió la siguiente configuración:
+
+```json
+{
+  "command": "npx",
+  "args": [
+    "-y",
+    "@modelcontextprotocol/server-filesystem",
+    "."
+  ]
+}
+```
+
+## Paso 4: Guardar la configuración
+
+Cursor guarda la configuración del servidor en el archivo:
+
+Este archivo define los servidores MCP disponibles para el proyecto.
+
+---
+
+## Paso 5: Reiniciar Cursor
+
+Después de guardar la configuración se reinició Cursor para que el servidor MCP se cargara correctamente.
+
+Una vez reiniciado, la inteligencia artificial pudo acceder a los archivos del proyecto mediante el servidor MCP.
+## Pruebas realizadas con MCP
+
+Se realizaron varias consultas utilizando el servidor MCP filesystem para comprobar su funcionamiento.
+
+### Consulta 1
+Lista todos los archivos de este proyecto utilizando el servidor MCP filesystem.
+
+### Consulta 2
+Abre el archivo app.js y explica qué hace cada función principal del código.
+
+### Consulta 3
+Busca en el proyecto dónde se crean las tareas y explica cómo funciona esa parte del código.
+
+### Consulta 4
+Explica cómo se utiliza localStorage en este proyecto para guardar las tareas.
+
+### Consulta 5
+Analiza la función de filtrado de tareas y sugiere posibles mejoras en el código.
