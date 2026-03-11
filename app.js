@@ -22,6 +22,17 @@ function validateTask(text) {
 
   return true;
 }
+/**
+ * Crea un objeto tarea
+ * @param {string} text
+ * @returns {object}
+ */
+function createTask(text) {
+  return {
+    id: Date.now(),
+    text: text
+  };
+}
 
 // Carga las tareas guardadas
 window.addEventListener("load", () => {
@@ -44,10 +55,7 @@ form.addEventListener("submit", function (e) {
   if (!validateTask(text)) return;
  
   try {
-    const task = {
-      id: Date.now(),
-      text: text,
-    };
+   const task = createTask(text);
 
     tasks.push(task);
     toggleEmptyMessage();
