@@ -91,9 +91,7 @@ function renderTask(task) {
     btn.addEventListener("click", () => {
       try {
         li.remove();
-        tasks = tasks.filter(t => t.id !== task.id);
-        toggleEmptyMessage();
-        saveTasks();
+        deleteTask(task.id);
       } catch (error) {
         console.error("Error al eliminar la tarea:", error);
       }
@@ -115,7 +113,15 @@ function saveTasks() {
     console.error("Error al guardar las tareas:", error);
   }
 }
-
+/**
+ * Elimina una tarea por id
+ * @param {number} id
+ */
+function deleteTask(id) {
+  tasks = tasks.filter(task => task.id !== id);
+  toggleEmptyMessage();
+  saveTasks();
+}
 // Filtro de busqueda
 search.addEventListener("input", function () {
   try {
