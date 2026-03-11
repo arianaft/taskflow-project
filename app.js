@@ -122,23 +122,25 @@ function deleteTask(id) {
   toggleEmptyMessage();
   saveTasks();
 }
+/**
+ * Filtra las tareas según el texto de búsqueda
+ * @param {string} searchText
+ */
+function filterTasks(searchText) {
+  const items = document.querySelectorAll("#taskList li");
+
+  items.forEach(item => {
+    if (item.dataset.text.includes(searchText)) {
+      item.style.display = "flex";
+    } else {
+      item.style.display = "none";
+    }
+  });
+}
 // Filtro de busqueda
-search.addEventListener("input", function () {
-  try {
-    const text = search.value.toLowerCase();
-
-    const items = document.querySelectorAll("#taskList li");
-
-    items.forEach(item => {
-      if (item.dataset.text.includes(text)) {
-        item.style.display = "flex";
-      } else {
-        item.style.display = "none";
-      }
-    });
-  } catch (error) {
-    console.error("Error al filtrar las tareas:", error);
-  }
+search.addEventListener("input", () => {
+  const text = search.value.toLowerCase();
+  filterTasks(text);
 });
 
 //Mostrar u ocultar mensajes
