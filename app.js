@@ -4,6 +4,24 @@ const list = document.getElementById("taskList");
 const search = document.getElementById("searchTask");
 
 let tasks = [];
+/**
+ * Valida el texto de una tarea
+ * @param {string} text
+ * @returns {boolean}
+ */
+function validateTask(text) {
+  if (!text || text.trim() === "") {
+    alert("La tarea no puede estar vacía");
+    return false;
+  }
+
+  if (text.length > 100) {
+    alert("La tarea es demasiado larga");
+    return false;
+  }
+
+  return true;
+}
 
 // Carga las tareas guardadas
 window.addEventListener("load", () => {
@@ -22,10 +40,9 @@ window.addEventListener("load", () => {
 // Añadir tarea
 form.addEventListener("submit", function (e) {
   e.preventDefault();
-
   const text = input.value.trim();
-  if (text === "") return;
-
+  if (!validateTask(text)) return;
+ 
   try {
     const task = {
       id: Date.now(),
