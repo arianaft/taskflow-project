@@ -68,7 +68,10 @@ form.addEventListener("submit", function (e) {
   }
 });
 
-// Crea elemento en la lista
+// Crea/**
+/* * Renderiza una tarea en la lista del DOM
+* @param {object} task
+*/
 function renderTask(task) {
   try {
     const li = document.createElement("li");
