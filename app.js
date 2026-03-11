@@ -41,8 +41,9 @@ window.addEventListener("load", () => {
 
     if (savedTasks) {
       tasks = JSON.parse(savedTasks);
-      tasks.forEach(task => renderTask(task));
+      tasks.forEach(task => renderTask(task));     
     }
+    toggleEmptyMessage();
   } catch (error) {
     console.error("Error al cargar las tareas:", error);
   }
@@ -68,7 +69,6 @@ form.addEventListener("submit", function (e) {
   }
 });
 
-// Crea/**
 /* * Renderiza una tarea en la lista del DOM
 * @param {object} task
 */
