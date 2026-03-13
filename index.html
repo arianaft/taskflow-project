@@ -8,105 +8,231 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="flex justify-between items-center p-5 bg-slate-900 text-white">
-    <h1 class="text-xl font-bold">TravelDream</h1>
+  <header
+    class="fixed inset-x-0 top-0 z-30 border-b border-slate-800/40
+           bg-slate-900/70 backdrop-blur-md"
+  >
+    <div class="max-w-6xl mx-auto flex items-center justify-between px-4 py-3">
+      <a href="#" class="flex items-center gap-2">
+        <span class="text-xl font-bold text-white">TravelDream</span>
+        <span class="text-sky-400 text-lg">✈️</span>
+      </a>
 
-    <nav aria-label="Navegación principal">
-      <ul class="flex gap-4">
-        <li><a href="#" class="hover:text-sky-400">Inicio</a></li>
-        <li><a href="#" class="hover:text-sky-400">Destinos</a></li>
-        <li><a href="#" class="hover:text-sky-400">Contacto</a></li>
-      </ul>
-    </nav>
+      <nav aria-label="Navegación principal" class="hidden md:flex items-center gap-6 text-sm">
+        <a
+          href="#"
+          class="text-slate-200 hover:text-sky-300 relative after:absolute after:left-0 after:-bottom-1
+                 after:h-[2px] after:w-0 after:bg-sky-400 after:transition-all hover:after:w-full"
+        >
+          Inicio
+        </a>
+        <a
+          href="#destinos"
+          class="text-slate-200 hover:text-sky-300 relative after:absolute after:left-0 after:-bottom-1
+                 after:h-[2px] after:w-0 after:bg-sky-400 after:transition-all hover:after:w-full"
+        >
+          Destinos
+        </a>
+        <a
+          href="#contacto"
+          class="text-slate-200 hover:text-sky-300 relative after:absolute after:left-0 after:-bottom-1
+                 after:h-[2px] after:w-0 after:bg-sky-400 after:transition-all hover:after:w-full"
+        >
+          Contacto
+        </a>
+      </nav>
 
-    <button id="toggleDark" type="button" aria-pressed="false" class="bg-gray-800 px-3 py-1 rounded">
-      🌙<span> Modo oscuro</span>
-    </button>
+      <button
+        id="toggleDark"
+        type="button"
+        aria-pressed="false"
+        class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium
+               bg-slate-800/80 text-slate-100 border border-slate-700
+               hover:bg-slate-700 hover:border-sky-500 hover:text-sky-200
+               transition-colors"
+      >
+        <span class="text-sm">🌙</span>
+        <span class="hidden sm:inline">Modo oscuro</span>
+      </button>
+    </div>
   </header>
 
   <section
-    class="h-[70vh] bg-cover bg-center flex flex-col justify-center items-center text-white text-center"
-    style="background-image:url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e')"
+    class="relative h-[70vh] min-h-[480px] flex items-center justify-center text-white text-center overflow-hidden"
   >
-    <h2 class="text-4xl font-bold mb-3">Descubre el mundo</h2>
-    <p class="mb-4">Viaja, explora y vive experiencias únicas</p>
-    <button type="button" class="btn-primary px-6 py-3 rounded">Explorar</button>
+    <div
+      class="absolute inset-0 bg-cover bg-center"
+      style="background-image:url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e')"
+    ></div>
+
+    <div class="absolute inset-0 bg-gradient-to-b from-slate-900/80 via-slate-900/40 to-slate-900/80"></div>
+
+    <div
+      class="relative z-10 max-w-2xl px-4 flex flex-col items-center gap-4 animate-fade-up"
+    >
+      <p class="text-sm tracking-[0.35em] uppercase text-sky-300/80">
+        TravelDream
+      </p>
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight">
+        Descubre el mundo, <span class="text-sky-300">un viaje</span> a la vez
+      </h1>
+      <p class="text-base md:text-lg text-slate-100/80 max-w-xl">
+        Inspírate con destinos únicos y organiza cada detalle de tu próxima aventura
+        desde una sola página.
+      </p>
+
+      <div class="mt-2 flex flex-wrap items-center justify-center gap-3">
+        <button
+          type="button"
+          class="btn-primary px-6 py-3 rounded-full text-sm font-semibold shadow-lg shadow-sky-500/30
+                 flex items-center gap-2 hover:-translate-y-0.5 hover:shadow-xl
+                 transition-transform transition-shadow"
+        >
+          Explorar destinos
+          <span class="text-lg">➜</span>
+        </button>
+        <button
+          type="button"
+          class="px-5 py-3 rounded-full border border-white/30 text-sm font-medium
+                 bg-white/5 hover:bg-white/10 backdrop-blur-sm
+                 transition-colors"
+        >
+          Planificar mi viaje
+        </button>
+      </div>
+
+      <p class="text-xs md:text-sm text-slate-200/70 mt-1">
+        Sin registros, tu lista de tareas se guarda directamente en tu navegador.
+      </p>
+    </div>
   </section>
 
   <main>
-    <section class="py-16 bg-gray-100 dark:bg-gray-900">
-      <h2 class="text-3xl font-bold text-center mb-10 dark:text-white">Destinos populares</h2>
-      <div class="flex flex-wrap justify-center gap-8">
-        <div class="card w-[300px] overflow-hidden">
-          <img
-            src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34"
-            alt="París"
-            loading="lazy"
-            class="w-full h-[180px] object-cover"
-          >
-          <div class="p-5">
-            <div class="flex justify-between items-center mb-2">
-              <h3 class="text-xl font-bold dark:text-white">París</h3>
-              <div class="flex gap-2">
-                <span class="badge bg-blue-100 text-blue-600">Cultural</span>
-                <span class="badge bg-red-100 text-red-600">🔥 Top</span>
-              </div>
-            </div>
-            <p class="text-gray-600 dark:text-gray-300 mb-4">
-              Descubre monumentos icónicos como la Torre Eiffel y pasea por sus calles llenas de historia.
-            </p>
-            <button type="button" class="btn-primary px-4 py-2 rounded">
-              Ver más
-            </button>
-          </div>
-        </div>
+    <section id="destinos" class="py-16 bg-gray-100 dark:bg-gray-900">
+      <div class="max-w-6xl mx-auto px-4">
+        <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 dark:text-white">
+          Destinos populares
+        </h2>
+        <p class="text-center text-gray-600 dark:text-gray-300 mb-10 max-w-2xl mx-auto text-sm md:text-base">
+          Inspírate con algunas de las ciudades más visitadas del mundo y empieza a
+          construir tu próxima escapada.
+        </p>
 
-        <div class="card w-[300px] overflow-hidden">
-          <img
-            src="https://images.unsplash.com/photo-1506744038136-46273834b3fb"
-            alt="Bali"
-            loading="lazy"
-            class="w-full h-[180px] object-cover"
+        <div class="grid gap-8 md:grid-cols-3">
+          <article
+            class="card w-full overflow-hidden flex flex-col hover:-translate-y-1 hover:shadow-2xl
+                   transition-transform transition-shadow duration-200"
           >
-          <div class="p-5">
-            <div class="flex justify-between items-center mb-2">
-              <h3 class="text-xl font-bold dark:text-white">Bali</h3>
-              <div class="flex gap-2">
-                <span class="badge bg-green-100 text-green-600">Aventura</span>
-                <span class="badge bg-yellow-100 text-yellow-600">⭐ Popular</span>
-              </div>
-            </div>
-            <p class="text-gray-600 dark:text-gray-300 mb-4">
-              Disfruta de playas paradisíacas, templos exóticos y una naturaleza impresionante.
-            </p>
-            <button type="button" class="btn-primary px-4 py-2 rounded">
-              Ver más
-            </button>
-          </div>
-        </div>
+            <div class="relative h-48">
+              <img
+                src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34"
+                alt="París"
+                loading="lazy"
+                class="w-full h-full object-cover"
+              >
+              <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
 
-        <div class="card w-[300px] overflow-hidden">
-          <img
-            src="https://images.unsplash.com/photo-1549693578-d683be217e58"
-            alt="Tokio"
-            loading="lazy"
-            class="w-full h-[180px] object-cover"
-          >
-          <div class="p-5">
-            <div class="flex justify-between items-center mb-2">
-              <h3 class="text-xl font-bold dark:text-white">Tokio</h3>
-              <div class="flex gap-2">
-                <span class="badge bg-purple-100 text-purple-600">Moderno</span>
-                <span class="badge bg-green-100 text-green-600">📈 Tendencia</span>
+              <div class="absolute bottom-3 left-3 flex gap-2">
+                <span class="badge bg-blue-100 text-blue-700">Cultural</span>
+                <span class="badge bg-red-100 text-red-700">🔥 Top</span>
               </div>
             </div>
-            <p class="text-gray-600 dark:text-gray-300 mb-4">
-              Vive la fusión perfecta entre tradición japonesa y tecnología futurista.
-            </p>
-            <button type="button" class="bg-sky-500 text-white px-4 py-2 rounded hover:bg-sky-600 transition">
-              Ver más
-            </button>
-          </div>
+
+            <div class="p-5 flex flex-col flex-1">
+              <div class="flex items-start justify-between mb-2">
+                <h3 class="text-xl font-bold dark:text-white">París</h3>
+                <span class="text-sm text-yellow-400">★ 4.8</span>
+              </div>
+              <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">
+                Descubre monumentos icónicos como la Torre Eiffel y pasea por sus
+                calles llenas de historia.
+              </p>
+              <button
+                type="button"
+                class="mt-auto inline-flex items-center justify-center gap-2 text-sm font-semibold
+                       btn-primary px-4 py-2 rounded-full"
+              >
+                Ver destino
+                <span>→</span>
+              </button>
+            </div>
+          </article>
+
+          <article
+            class="card w-full overflow-hidden flex flex-col hover:-translate-y-1 hover:shadow-2xl
+                   transition-transform transition-shadow duration-200"
+          >
+            <div class="relative h-48">
+              <img
+                src="https://images.unsplash.com/photo-1506744038136-46273834b3fb"
+                alt="Bali"
+                loading="lazy"
+                class="w-full h-full object-cover"
+              >
+              <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
+
+              <div class="absolute bottom-3 left-3 flex gap-2">
+                <span class="badge bg-green-100 text-green-700">Aventura</span>
+                <span class="badge bg-yellow-100 text-yellow-700">⭐ Popular</span>
+              </div>
+            </div>
+
+            <div class="p-5 flex flex-col flex-1">
+              <div class="flex items-start justify-between mb-2">
+                <h3 class="text-xl font-bold dark:text-white">Bali</h3>
+                <span class="text-sm text-yellow-400">★ 4.7</span>
+              </div>
+              <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">
+                Disfruta de playas paradisíacas, templos exóticos y una naturaleza impresionante.
+              </p>
+              <button
+                type="button"
+                class="mt-auto inline-flex items-center justify-center gap-2 text-sm font-semibold
+                       btn-primary px-4 py-2 rounded-full"
+              >
+                Ver destino
+                <span>→</span>
+              </button>
+            </div>
+          </article>
+
+          <article
+            class="card w-full overflow-hidden flex flex-col hover:-translate-y-1 hover:shadow-2xl
+                   transition-transform transition-shadow duration-200"
+          >
+            <div class="relative h-48">
+              <img
+                src="https://images.unsplash.com/photo-1549693578-d683be217e58"
+                alt="Tokio"
+                loading="lazy"
+                class="w-full h-full object-cover"
+              >
+              <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
+
+              <div class="absolute bottom-3 left-3 flex gap-2">
+                <span class="badge bg-purple-100 text-purple-700">Moderno</span>
+                <span class="badge bg-green-100 text-green-700">📈 Tendencia</span>
+              </div>
+            </div>
+
+            <div class="p-5 flex flex-col flex-1">
+              <div class="flex items-start justify-between mb-2">
+                <h3 class="text-xl font-bold dark:text-white">Tokio</h3>
+                <span class="text-sm text-yellow-400">★ 4.9</span>
+              </div>
+              <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">
+                Vive la fusión perfecta entre tradición japonesa y tecnología futurista.
+              </p>
+              <button
+                type="button"
+                class="mt-auto inline-flex items-center justify-center gap-2 text-sm font-semibold
+                       btn-primary px-4 py-2 rounded-full"
+              >
+                Ver destino
+                <span>→</span>
+              </button>
+            </div>
+          </article>
         </div>
       </div>
     </section>
@@ -146,89 +272,123 @@
       </div>
     </section>
 
-    <section class="py-16 bg-gray-100 dark:bg-gray-900">
-      <h2 class="text-3xl font-bold text-center mb-2 dark:text-white">Planifica tu viaje</h2>
-      <p class="text-center text-gray-600 dark:text-gray-300 mb-8">
-        Crea tu lista de cosas que necesitas hacer antes de viajar
-      </p>
+  <section class="py-16 bg-gray-100 dark:bg-gray-900">
+     <h2 class="text-3xl font-bold text-center mb-4 dark:text-white">
+    Planifica tu viaje
+  </h2>
+  <p class="text-center text-gray-600 dark:text-gray-300 mb-10 max-w-2xl mx-auto text-sm md:text-base">
+    Crea y organiza tu lista de tareas antes de viajar.
+  </p>
 
-      <section class="max-w-xl mx-auto mb-8 px-4">
-        <h3 class="text-xl font-semibold mb-3 text-gray-800 dark:text-white text-center">
-          ¿Cómo funciona tu lista de viaje?
-        </h3>
-        <ol class="list-decimal list-inside space-y-1 text-gray-600 dark:text-gray-300 text-sm">
-          <li>Escribe una tarea como “Reservar hotel” o “Hacer check-in online”.</li>
-          <li>Pulsa en “Añadir” para guardarla en tu lista.</li>
-          <li>Haz clic sobre una tarea para marcarla como completada.</li>
-          <li>Usa el buscador para encontrar tareas por texto.</li>
-          <li>Tu lista se guarda automáticamente en este navegador.</li>
-        </ol>
-      </section>
+   <div class="max-w-2xl mx-auto px-4">
 
-      <div class="flex justify-center gap-4 flex-wrap mb-4">
-        <form id="taskForm" class="flex gap-2">
-          <input
-            type="text"
-            id="taskInput"
-            placeholder="Ej: Reservar hotel"
-            aria-label="Nueva tarea"
-            class="px-4 py-2 rounded-full border shadow-sm focus:ring-2 focus:ring-sky-400 dark:bg-gray-800 dark:text-white"
-          >
-          <button
-            type="submit"
-            class="btn-primary px-4 py-2 rounded-lg"
-          >
-            Añadir
-          </button>
-        </form>
+   <div class="card p-10 space-y-6 border border-gray-200/60 dark:border-gray-700/60">
+      <!-- Header -->
+      <header class="text-center space-y-2 mb-6">
 
-        <input
-          type="text"
-          id="searchTask"
-          placeholder="🔎 Buscar tarea de viaje..."
-          aria-label="Buscar tareas"
-          class="px-4 py-2 rounded-full border shadow-sm focus:ring-2 focus:ring-sky-400 dark:bg-gray-800 dark:text-white"
+      </header>
+
+
+      <!-- Formulario añadir tarea -->
+ <form id="taskForm" class="flex justify-center gap-3 mb-4 flex-wrap">
+
+  <input
+    type="text"
+    id="taskInput"
+    placeholder="Ej: Reservar hotel"
+    class="w-[240px] px-4 py-2 rounded-full border shadow-sm
+           focus:ring-2 focus:ring-sky-400
+           dark:bg-gray-800 dark:text-white"
+  >
+
+  <button
+    type="submit"
+    class="btn-primary px-5 py-2 rounded-full text-sm font-semibold whitespace-nowrap"
+  >
+    Añadir tarea
+  </button>
+
+<!-- Buscar -->
+  <input
+    type="text"
+    id="searchTask"
+    placeholder="🔎 Buscar tarea"
+    class="w-[240px] px-4 py-2 rounded-full border shadow-sm
+           focus:ring-2 focus:ring-sky-400
+           dark:bg-gray-800 dark:text-white"
+  >
+
+</form>
+
+
+      <!-- Filtros -->
+    <div class="flex justify-center gap-8 mb-4 mt-6 text-sm text-gray-700 dark:text-gray-300 max-w-md mx-auto">
+  <div class="flex items-center gap-2">
+    <label for="statusFilter">Estado</label>
+
+    <select
+      id="statusFilter"
+      class="w-[150px] px-3 py-1.5 rounded-lg border shadow-sm dark:bg-gray-800 dark:text-white"
+    >
+      <option value="all">Todas</option>
+      <option value="pending">Pendientes</option>
+      <option value="completed">Completadas</option>
+    </select>
+  </div>
+
+
+  <div class="flex items-center gap-2">
+    <label for="sortOrder">Orden</label>
+
+    <select
+      id="sortOrder"
+      class="w-[150px] px-3 py-1.5 rounded-lg border shadow-sm dark:bg-gray-800 dark:text-white"
+    >
+      <option value="newest">Más recientes</option>
+      <option value="oldest">Más antiguas</option>
+      <option value="alphabetical">Alfabético</option>
+    </select>
+  </div>
+
+</div>
+
+
+      <!-- Botón eliminar -->
+      <div class="flex justify-center mb-4">
+  <button
+    id="clearCompleted"
+    class="px-4 py-2 rounded-full border text-sm
+           text-gray-700 dark:text-gray-200
+           hover:bg-gray-100 dark:hover:bg-gray-800"
+  >
+    Eliminar completadas
+  </button>
+</div>
+
+
+      <!-- Lista -->
+      <div class="space-y-2">
+
+        <ul id="taskList" class="space-y-2"></ul>
+
+        <p
+          id="completedCount"
+          class="text-center text-sm text-gray-600 dark:text-gray-300"
+        ></p>
+
+        <p
+          id="emptyMessage"
+          class="text-center text-sm text-gray-500"
         >
+          No hay tareas todavía ✈️
+        </p>
+
       </div>
 
-      <div class="max-w-xl mx-auto mb-6 px-4 flex flex-wrap gap-3 items-center justify-center text-sm">
-        <label class="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-          Estado:
-          <select
-            id="statusFilter"
-            class="px-2 py-1 rounded border shadow-sm dark:bg-gray-800 dark:text-white"
-          >
-            <option value="all">Todas</option>
-            <option value="pending">Pendientes</option>
-            <option value="completed">Completadas</option>
-          </select>
-        </label>
+    </div>
 
-        <label class="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-          Ordenar por:
-          <select
-            id="sortOrder"
-            class="px-2 py-1 rounded border shadow-sm dark:bg-gray-800 dark:text-white"
-          >
-            <option value="newest">Más recientes</option>
-            <option value="oldest">Más antiguas</option>
-            <option value="alphabetical">Alfabético A-Z</option>
-          </select>
-        </label>
-
-        <button
-          id="clearCompleted"
-          type="button"
-          class="px-3 py-1 rounded-full border text-xs text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
-        >
-          Eliminar completadas
-        </button>
-      </div>
-
-      <ul id="taskList" class="max-w-xl mx-auto space-y-3"></ul>
-      <p id="completedCount" class="text-center text-gray-600 dark:text-gray-300 mt-4"></p>
-      <p id="emptyMessage" class="text-center text-gray-500 mt-4">No hay tareas todavía ✈️</p>
-    </section>
+  </div>
+</section>
   </main>
 
   <footer class="bg-gray-900 text-white text-center py-6 dark:bg-black">
