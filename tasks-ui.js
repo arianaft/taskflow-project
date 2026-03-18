@@ -29,33 +29,48 @@ let currentSortOrder = "newest";
 let currentSearchText = "";
 
 /**
+ * Devuelve true si el modo oscuro está activo.
+ * @returns {boolean}
+ */
+function isDark() {
+  return document.documentElement.classList.contains("dark");
+}
+
+/**
  * Renderiza una tarea como elemento <li>.
- * El check funciona clicando en la fila (clase toggle-btn).
  * @param {import('./tasks.js').Task} task
  * @returns {HTMLLIElement}
  */
 function renderTask(task) {
   const li = document.createElement("li");
   li.dataset.id = task.id;
+
+  const dark = isDark();
+  const bg        = dark ? "#1f2937" : "#ffffff";
+  const border    = dark ? "#374151" : "#f1f5f9";
+  const textColor = dark ? "#e5e7eb" : "#111827";
+  const mutedColor= dark ? "#9ca3af" : "#9ca3af";
+  const iconColor = dark ? "#6b7280" : "#9ca3af";
+
   li.style.cssText = `
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 12px 16px;
-    border-bottom: 1px solid #f1f5f9;
+    border-bottom: 1px solid ${border};
+    background: ${bg};
     transition: background 0.15s;
     cursor: pointer;
   `;
 
   li.innerHTML = `
     <div class="toggle-btn" style="display:flex; align-items:center; gap:10px; flex:1; min-width:0;">
-      <!-- Círculo check -->
       <div style="
         width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0;
         display: flex; align-items: center; justify-content: center;
         ${task.completed
           ? "background: #10b981; border: 2px solid #10b981;"
-          : "border: 2px solid #d1d5db; background: transparent;"}
+          : `border: 2px solid ${dark ? "#6b7280" : "#d1d5db"}; background: transparent;`}
       ">
         ${task.completed
           ? `<svg width="11" height="11" fill="none" stroke="white" stroke-width="3" viewBox="0 0 24 24">
@@ -63,26 +78,23 @@ function renderTask(task) {
              </svg>`
           : ""}
       </div>
-
-      <!-- Texto -->
       <span style="
         font-size: 14px;
         white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         ${task.completed
-          ? "text-decoration: line-through; color: #9ca3af;"
-          : "font-weight: 500; color: #111827;"}
+          ? `text-decoration: line-through; color: ${mutedColor};`
+          : `font-weight: 500; color: ${textColor};`}
       ">${task.text}</span>
     </div>
 
-    <!-- Acciones -->
     <div class="task-actions" style="display:flex; gap:4px; flex-shrink:0; margin-left:8px;">
       <button class="edit-btn" title="Editar" style="
         padding: 5px; border: none; background: transparent;
-        color: #9ca3af; cursor: pointer; border-radius: 6px;
+        color: ${iconColor}; cursor: pointer; border-radius: 6px;
         display: flex; align-items: center; justify-content: center;
         transition: color 0.15s, background 0.15s;
       " onmouseover="this.style.color='#4f46e5';this.style.background='#eef2ff'"
-         onmouseout="this.style.color='#9ca3af';this.style.background='transparent'">
+         onmouseout="this.style.color='${iconColor}';this.style.background='transparent'">
         <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round"
             d="M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 012.828 2.828L11.828 15.828a2 2 0 01-1.414.586H8v-2.414a2 2 0 01.586-1.414z"/>
@@ -90,11 +102,11 @@ function renderTask(task) {
       </button>
       <button class="delete-btn" title="Eliminar" style="
         padding: 5px; border: none; background: transparent;
-        color: #9ca3af; cursor: pointer; border-radius: 6px;
+        color: ${iconColor}; cursor: pointer; border-radius: 6px;
         display: flex; align-items: center; justify-content: center;
         transition: color 0.15s, background 0.15s;
       " onmouseover="this.style.color='#ef4444';this.style.background='#fef2f2'"
-         onmouseout="this.style.color='#9ca3af';this.style.background='transparent'">
+         onmouseout="this.style.color='${iconColor}';this.style.background='transparent'">
         <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round"
             d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
@@ -171,8 +183,6 @@ function updateProgressBar() {
   const completed = TaskStore.filterCompletedTasks(tasks).length;
   const percentage = total === 0 ? 0 : Math.round((completed / total) * 100);
 
-  progressBar.classList.remove("bg-red-500", "bg-yellow-400", "bg-green-500");
-
   if (percentage < 30) {
     progressBar.style.background = "#ef4444";
   } else if (percentage < 70) {
@@ -183,6 +193,82 @@ function updateProgressBar() {
 
   progressBar.style.width = percentage + "%";
   progressText.textContent = `${completed} de ${total} completadas`;
+}
+
+/**
+ * Actualiza los colores del widget según el tema activo.
+ * Se llama al cambiar de tema y al iniciar.
+ * @returns {void}
+ */
+function applyWidgetTheme() {
+  const dark = isDark();
+  const widget       = document.getElementById("task-widget");
+  const row1         = document.getElementById("task-row-1");
+  const row2         = document.getElementById("task-row-2");
+  const taskFooter   = document.getElementById("task-footer");
+  const progressTrack= document.getElementById("progress-track");
+
+  if (widget) {
+    widget.style.background   = dark ? "#1f2937" : "#ffffff";
+    widget.style.borderColor  = dark ? "#374151" : "#e5e7eb";
+  }
+  if (row1) {
+    row1.style.borderBottomColor = dark ? "#374151" : "#f1f5f9";
+  }
+  if (row2) {
+    row2.style.background        = dark ? "#111827" : "#f9fafb";
+    row2.style.borderBottomColor = dark ? "#374151" : "#f1f5f9";
+  }
+  if (taskFooter) {
+    taskFooter.style.background   = dark ? "#111827" : "#f9fafb";
+    taskFooter.style.borderTopColor= dark ? "#374151" : "#f1f5f9";
+  }
+  if (progressTrack) {
+    progressTrack.style.background = dark ? "#374151" : "#e5e7eb";
+  }
+  if (emptyMessage) {
+    emptyMessage.style.color      = dark ? "#6b7280" : "#9ca3af";
+    emptyMessage.style.background = dark ? "#1f2937" : "#ffffff";
+  }
+
+  // Inputs
+  [document.getElementById("taskInput"), document.getElementById("searchTask")].forEach(el => {
+    if (!el) return;
+    el.style.background   = dark ? "#374151" : "#f9fafb";
+    el.style.color        = dark ? "#f3f4f6" : "#111827";
+    el.style.borderColor  = dark ? "#4b5563" : "#e5e7eb";
+  });
+
+  // Selects
+  [document.getElementById("statusFilter"), document.getElementById("sortOrder")].forEach(el => {
+    if (!el) return;
+    el.style.background  = dark ? "#374151" : "#ffffff";
+    el.style.color       = dark ? "#f3f4f6" : "#374151";
+    el.style.borderColor = dark ? "#4b5563" : "#e5e7eb";
+  });
+
+  // Textos de progreso
+  ["progress-label", "progressText"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.color = dark ? "#6b7280" : "#9ca3af";
+  });
+
+  // Botón completar todas
+  const completeAllEl = document.getElementById("completeAll");
+  if (completeAllEl) {
+    completeAllEl.style.color       = dark ? "#34d399" : "#059669";
+    completeAllEl.style.borderColor = dark ? "#065f46" : "#d1fae5";
+  }
+
+  // Botón limpiar completadas
+  const clearCompletedEl = document.getElementById("clearCompleted");
+  if (clearCompletedEl) {
+    clearCompletedEl.style.color       = dark ? "#9ca3af" : "#6b7280";
+    clearCompletedEl.style.borderColor = dark ? "#4b5563" : "#e5e7eb";
+  }
+
+  // Re-renderizar tareas para actualizar sus colores
+  renderAllTasks();
 }
 
 /**
@@ -218,10 +304,17 @@ function handleFormSubmit(event) {
  */
 function initTasksUI() {
   TaskStore.loadFromStorage();
-  renderAllTasks();
+  applyWidgetTheme();
   toggleEmptyMessage();
   updateCompletedCount();
   updateProgressBar();
+
+  // Escuchar cambios de tema desde theme.js
+  const observer = new MutationObserver(() => {
+    applyWidgetTheme();
+    updateProgressBar();
+  });
+  observer.observe(document.documentElement, { attributeFilter: ["class"] });
 
   if (form) {
     form.addEventListener("submit", handleFormSubmit);
