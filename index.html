@@ -17,68 +17,31 @@
         <span class="text-xl font-bold text-white">TravelDream</span>
         <span class="text-sky-400 text-lg">✈️</span>
       </a>
-
       <nav aria-label="Navegación principal" class="hidden md:flex items-center gap-6 text-sm">
-        <a
-          href="#"
-          class="text-slate-200 hover:text-sky-300 relative after:absolute after:left-0 after:-bottom-1
-                 after:h-[2px] after:w-0 after:bg-sky-400 after:transition-all hover:after:w-full"
-        >
-          Inicio
-        </a>
-        <a
-          href="#destinos"
-          class="text-slate-200 hover:text-sky-300 relative after:absolute after:left-0 after:-bottom-1
-                 after:h-[2px] after:w-0 after:bg-sky-400 after:transition-all hover:after:w-full"
-        >
-          Destinos
-        </a>
-        <a
-          href="#contacto"
-          class="text-slate-200 hover:text-sky-300 relative after:absolute after:left-0 after:-bottom-1
-                 after:h-[2px] after:w-0 after:bg-sky-400 after:transition-all hover:after:w-full"
-        >
-          Contacto
-        </a>
+        <a href="#" class="text-slate-200 hover:text-sky-300 relative after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-0 after:bg-sky-400 after:transition-all hover:after:w-full">Inicio</a>
+        <a href="#destinos" class="text-slate-200 hover:text-sky-300 relative after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-0 after:bg-sky-400 after:transition-all hover:after:w-full">Destinos</a>
+        <a href="#contacto" class="text-slate-200 hover:text-sky-300 relative after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-0 after:bg-sky-400 after:transition-all hover:after:w-full">Contacto</a>
       </nav>
-
-      <button
-        id="toggleDark"
-        type="button"
-        aria-pressed="false"
+      <button id="toggleDark" type="button" aria-pressed="false"
         class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium
                bg-slate-800/80 text-slate-100 border border-slate-700
-               hover:bg-slate-700 hover:border-sky-500 hover:text-sky-200
-               transition-colors"
-      >
+               hover:bg-slate-700 hover:border-sky-500 hover:text-sky-200 transition-colors">
         <span class="text-sm">🌙</span>
         <span class="hidden sm:inline">Modo oscuro</span>
       </button>
     </div>
   </header>
 
-  <section
-    class="relative h-[70vh] min-h-[480px] flex items-center justify-center text-white text-center overflow-hidden"
-  >
-    <div
-      class="absolute inset-0 bg-cover bg-center"
-      style="background-image:url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e')"
-    ></div>
-
+  <section class="relative h-[70vh] min-h-[480px] flex items-center justify-center text-white text-center overflow-hidden">
+    <div class="absolute inset-0 bg-cover bg-center" style="background-image:url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e')"></div>
     <div class="absolute inset-0 bg-gradient-to-b from-slate-900/80 via-slate-900/40 to-slate-900/80"></div>
-
-    <div
-      class="relative z-10 max-w-2xl px-4 flex flex-col items-center gap-4 animate-fade-up"
-    >
-      <p class="text-sm tracking-[0.35em] uppercase text-sky-300/80">
-        TravelDream
-      </p>
+    <div class="relative z-10 max-w-2xl px-4 flex flex-col items-center gap-4 animate-fade-up">
+      <p class="text-sm tracking-[0.35em] uppercase text-sky-300/80">TravelDream</p>
       <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight">
         Descubre el mundo, <span class="text-sky-300">un viaje</span> a la vez
       </h1>
       <p class="text-base md:text-lg text-slate-100/80 max-w-xl">
-        Inspírate con destinos únicos y organiza cada detalle de tu próxima aventura
-        desde una sola página.
+        Inspírate con destinos únicos y organiza cada detalle de tu próxima aventura desde una sola página.
       </p>
       <p class="text-xs md:text-sm text-slate-200/70 mt-1">
         Sin registros, tu lista de tareas se guarda directamente en tu navegador.
@@ -89,127 +52,63 @@
   <main>
     <section id="destinos" class="py-16 bg-gray-100 dark:bg-gray-900">
       <div class="max-w-6xl mx-auto px-4">
-        <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 dark:text-white">
-          Destinos populares
-        </h2>
+        <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 dark:text-white">Destinos populares</h2>
         <p class="text-center text-gray-600 dark:text-gray-300 mb-10 max-w-2xl mx-auto text-sm md:text-base">
-          Inspírate con algunas de las ciudades más visitadas del mundo y empieza a
-          construir tu próxima escapada.
+          Inspírate con algunas de las ciudades más visitadas del mundo y empieza a construir tu próxima escapada.
         </p>
-
         <div class="grid gap-8 md:grid-cols-3">
-          <article
-            class="card w-full overflow-hidden flex flex-col hover:-translate-y-1 hover:shadow-2xl
-                   transition-transform transition-shadow duration-200"
-          >
+          <article class="card w-full overflow-hidden flex flex-col hover:-translate-y-1 hover:shadow-2xl transition-transform transition-shadow duration-200">
             <div class="relative h-48">
-              <img
-                src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34"
-                alt="París"
-                loading="lazy"
-                class="w-full h-full object-cover"
-              >
+              <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34" alt="París" loading="lazy" class="w-full h-full object-cover">
               <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
-
               <div class="absolute bottom-3 left-3 flex gap-2">
                 <span class="badge bg-blue-100 text-blue-700">Cultural</span>
                 <span class="badge bg-red-100 text-red-700">🔥 Top</span>
               </div>
             </div>
-
             <div class="p-5 flex flex-col flex-1">
               <div class="flex items-start justify-between mb-2">
                 <h3 class="text-xl font-bold dark:text-white">París</h3>
                 <span class="text-sm text-yellow-400">★ 4.8</span>
               </div>
-              <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">
-                Descubre monumentos icónicos como la Torre Eiffel y pasea por sus
-                calles llenas de historia.
-              </p>
-              <button
-                type="button"
-                class="mt-auto inline-flex items-center justify-center gap-2 text-sm font-semibold
-                       btn-primary px-4 py-2 rounded-full"
-              >
-                Ver destino
-                <span>→</span>
-              </button>
+              <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">Descubre monumentos icónicos como la Torre Eiffel y pasea por sus calles llenas de historia.</p>
+              <button type="button" class="mt-auto inline-flex items-center justify-center gap-2 text-sm font-semibold btn-primary px-4 py-2 rounded-full">Ver destino <span>→</span></button>
             </div>
           </article>
-
-          <article
-            class="card w-full overflow-hidden flex flex-col hover:-translate-y-1 hover:shadow-2xl
-                   transition-transform transition-shadow duration-200"
-          >
+          <article class="card w-full overflow-hidden flex flex-col hover:-translate-y-1 hover:shadow-2xl transition-transform transition-shadow duration-200">
             <div class="relative h-48">
-              <img
-                src="https://images.unsplash.com/photo-1506744038136-46273834b3fb"
-                alt="Bali"
-                loading="lazy"
-                class="w-full h-full object-cover"
-              >
+              <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb" alt="Bali" loading="lazy" class="w-full h-full object-cover">
               <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
-
               <div class="absolute bottom-3 left-3 flex gap-2">
                 <span class="badge bg-green-100 text-green-700">Aventura</span>
                 <span class="badge bg-yellow-100 text-yellow-700">⭐ Popular</span>
               </div>
             </div>
-
             <div class="p-5 flex flex-col flex-1">
               <div class="flex items-start justify-between mb-2">
                 <h3 class="text-xl font-bold dark:text-white">Bali</h3>
                 <span class="text-sm text-yellow-400">★ 4.7</span>
               </div>
-              <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">
-                Disfruta de playas paradisíacas, templos exóticos y una naturaleza impresionante.
-              </p>
-              <button
-                type="button"
-                class="mt-auto inline-flex items-center justify-center gap-2 text-sm font-semibold
-                       btn-primary px-4 py-2 rounded-full"
-              >
-                Ver destino
-                <span>→</span>
-              </button>
+              <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">Disfruta de playas paradisíacas, templos exóticos y una naturaleza impresionante.</p>
+              <button type="button" class="mt-auto inline-flex items-center justify-center gap-2 text-sm font-semibold btn-primary px-4 py-2 rounded-full">Ver destino <span>→</span></button>
             </div>
           </article>
-
-          <article
-            class="card w-full overflow-hidden flex flex-col hover:-translate-y-1 hover:shadow-2xl
-                   transition-transform transition-shadow duration-200"
-          >
+          <article class="card w-full overflow-hidden flex flex-col hover:-translate-y-1 hover:shadow-2xl transition-transform transition-shadow duration-200">
             <div class="relative h-48">
-              <img
-                src="https://images.unsplash.com/photo-1549693578-d683be217e58"
-                alt="Tokio"
-                loading="lazy"
-                class="w-full h-full object-cover"
-              >
+              <img src="https://images.unsplash.com/photo-1549693578-d683be217e58" alt="Tokio" loading="lazy" class="w-full h-full object-cover">
               <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
-
               <div class="absolute bottom-3 left-3 flex gap-2">
                 <span class="badge bg-purple-100 text-purple-700">Moderno</span>
                 <span class="badge bg-green-100 text-green-700">📈 Tendencia</span>
               </div>
             </div>
-
             <div class="p-5 flex flex-col flex-1">
               <div class="flex items-start justify-between mb-2">
                 <h3 class="text-xl font-bold dark:text-white">Tokio</h3>
                 <span class="text-sm text-yellow-400">★ 4.9</span>
               </div>
-              <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">
-                Vive la fusión perfecta entre tradición japonesa y tecnología futurista.
-              </p>
-              <button
-                type="button"
-                class="mt-auto inline-flex items-center justify-center gap-2 text-sm font-semibold
-                       btn-primary px-4 py-2 rounded-full"
-              >
-                Ver destino
-                <span>→</span>
-              </button>
+              <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">Vive la fusión perfecta entre tradición japonesa y tecnología futurista.</p>
+              <button type="button" class="mt-auto inline-flex items-center justify-center gap-2 text-sm font-semibold btn-primary px-4 py-2 rounded-full">Ver destino <span>→</span></button>
             </div>
           </article>
         </div>
@@ -224,13 +123,11 @@
           <h3 class="text-xl font-semibold mb-2 dark:text-white">Mejores precios</h3>
           <p class="text-gray-600 dark:text-gray-300">Ofertas exclusivas y paquetes personalizados.</p>
         </div>
-
         <div class="card p-6 w-[260px] text-center">
           <div class="text-3xl mb-3">🌍</div>
           <h3 class="text-xl font-semibold mb-2 dark:text-white">Destinos únicos</h3>
           <p class="text-gray-600 dark:text-gray-300">Experiencias seleccionadas alrededor del mundo.</p>
         </div>
-
         <div class="card p-6 w-[260px] text-center">
           <div class="text-3xl mb-3">📞</div>
           <h3 class="text-xl font-semibold mb-2 dark:text-white">Soporte 24/7</h3>
@@ -243,151 +140,132 @@
       <h2 class="text-3xl font-bold text-center mb-10 dark:text-white">Opiniones de viajeros</h2>
       <div class="flex justify-center">
         <div class="max-w-xl bg-gray-100 dark:bg-gray-700 p-6 rounded-xl shadow-lg text-center">
-          <p class="text-gray-700 dark:text-gray-200 italic mb-4">
-            "Una experiencia inolvidable en Bali. Todo perfectamente organizado."
-          </p>
+          <p class="text-gray-700 dark:text-gray-200 italic mb-4">"Una experiencia inolvidable en Bali. Todo perfectamente organizado."</p>
           <span class="font-semibold text-gray-800 dark:text-gray-300">- María G.</span>
         </div>
       </div>
     </section>
+
     <section class="py-16 bg-gray-100 dark:bg-gray-900">
-  <h2 class="text-3xl font-bold text-center mb-4 dark:text-white">
-    Planifica tu viaje
-  </h2>
-  <p class="text-center text-gray-600 dark:text-gray-300 mb-10 max-w-2xl mx-auto text-sm md:text-base">
-    Crea y organiza tu lista de tareas antes de viajar.
-  </p>
-
-  <div class="max-w-2xl mx-auto px-4">
-    <div style="background:#fff; border-radius:16px; border:1px solid #e5e7eb; overflow:hidden; box-shadow:0 1px 4px rgba(0,0,0,0.06);">
-
-      <!-- Fila 1: input + añadir + buscador -->
-      <div style="display:flex; align-items:center; gap:8px; padding:12px 16px; border-bottom:1px solid #f1f5f9;">
-        <form id="taskForm" style="display:flex; align-items:center; gap:8px; flex:1; min-width:0; margin:0;">
-          <input
-            type="text"
-            id="taskInput"
-            placeholder="Ej: Reservar hotel"
-            style="flex:1; min-width:0; height:38px; border-radius:8px; border:1px solid #e5e7eb;
-                   padding:0 12px; font-size:13px; background:#f9fafb; color:#111827;
-                   outline:none; transition:border 0.15s;"
-            onfocus="this.style.borderColor='#6366f1'; this.style.boxShadow='0 0 0 3px rgba(99,102,241,0.12)'"
-            onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'"
-          >
-          <button
-            type="submit"
-            style="height:38px; padding:0 16px; background:#4f46e5; color:#fff; border:none;
-                   border-radius:8px; font-size:13px; font-weight:600; cursor:pointer;
-                   white-space:nowrap; display:flex; align-items:center; gap:6px; transition:background 0.15s;"
-            onmouseover="this.style.background='#4338ca'"
-            onmouseout="this.style.background='#4f46e5'"
-          >
-            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
-            </svg>
-            Añadir
-          </button>
-        </form>
-
-        <!-- Buscador -->
-        <div style="position:relative; flex-shrink:0;">
-          <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);pointer-events:none;color:#9ca3af;"
-               width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <circle cx="11" cy="11" r="8"/>
-            <path stroke-linecap="round" d="M21 21l-4.35-4.35"/>
-          </svg>
-          <input
-            type="text"
-            id="searchTask"
-            placeholder="Buscar tarea..."
-            style="width:160px; height:38px; padding:0 12px 0 32px; border-radius:8px;
-                   border:1px solid #e5e7eb; font-size:13px; background:#f9fafb; color:#111827;
-                   outline:none; transition:border 0.15s;"
-            onfocus="this.style.borderColor='#6366f1'; this.style.boxShadow='0 0 0 3px rgba(99,102,241,0.12)'"
-            onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'"
-          >
-        </div>
-      </div>
-
-      <!-- Fila 2: filtros + acciones -->
-      <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap;
-                  gap:8px; padding:8px 16px; background:#f9fafb; border-bottom:1px solid #f1f5f9;">
-        
-        <!-- Selectores -->
-        <div style="display:flex; gap:8px; align-items:center;">
-          <select id="statusFilter"
-            style="height:30px; padding:0 8px; border-radius:6px; border:1px solid #e5e7eb;
-                   font-size:12px; background:#fff; color:#374151; cursor:pointer; outline:none;">
-            <option value="all">Todas</option>
-            <option value="pending">Pendientes</option>
-            <option value="completed">Completadas</option>
-          </select>
-          <select id="sortOrder"
-            style="height:30px; padding:0 8px; border-radius:6px; border:1px solid #e5e7eb;
-                   font-size:12px; background:#fff; color:#374151; cursor:pointer; outline:none;">
-            <option value="newest">Más recientes</option>
-            <option value="oldest">Más antiguas</option>
-            <option value="alphabetical">Alfabético</option>
-          </select>
-        </div>
-
-        <!-- Botones acción -->
-        <div style="display:flex; gap:8px; align-items:center;">
-          <button id="completeAll"
-            style="height:30px; padding:0 12px; border-radius:6px; border:1px solid #d1fae5;
-                   background:transparent; color:#059669; font-size:12px; font-weight:500;
-                   cursor:pointer; display:flex; align-items:center; gap:5px; transition:background 0.15s;"
-            onmouseover="this.style.background='#ecfdf5'"
-            onmouseout="this.style.background='transparent'"
-          >
-            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
-            Completar todas
-          </button>
-
-          <button id="clearCompleted"
-            style="height:30px; padding:0 12px; border-radius:6px; border:1px solid #e5e7eb;
-                   background:transparent; color:#6b7280; font-size:12px; font-weight:500;
-                   cursor:pointer; display:flex; align-items:center; gap:5px; transition:background 0.15s;"
-            onmouseover="this.style.background='#f3f4f6'"
-            onmouseout="this.style.background='transparent'"
-          >
-            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-            </svg>
-            Limpiar completadas
-          </button>
-        </div>
-      </div>
-
-      <!-- Lista de tareas -->
-      <ul id="taskList" style="list-style:none; margin:0; padding:0;"></ul>
-
-      <!-- Mensaje vacío -->
-      <p id="emptyMessage"
-         style="display:none; padding:48px 16px; text-align:center; font-size:13px; color:#9ca3af;">
-        ✈️ No hay tareas todavía
+      <h2 class="text-3xl font-bold text-center mb-4 dark:text-white">Planifica tu viaje</h2>
+      <p class="text-center text-gray-600 dark:text-gray-300 mb-10 max-w-2xl mx-auto text-sm md:text-base">
+        Crea y organiza tu lista de tareas antes de viajar.
       </p>
 
-      <!-- Barra de progreso -->
-      <div style="padding:10px 16px; background:#f9fafb; border-top:1px solid #f1f5f9; display:flex; align-items:center; gap:12px;">
-        <span style="font-size:11px; color:#9ca3af; white-space:nowrap;">Progreso actual</span>
-        <div style="flex:1; height:6px; background:#e5e7eb; border-radius:999px; overflow:hidden;">
-          <div id="progressBar"
-               style="width:0%; height:100%; background:#10b981; border-radius:999px; transition:width 0.5s ease;">
+      <div class="max-w-2xl mx-auto px-4">
+        <div id="task-widget"
+          style="background:#fff; border-radius:16px; border:1px solid #e5e7eb; overflow:hidden; box-shadow:0 1px 4px rgba(0,0,0,0.06);">
+
+          <!-- Fila 1: input + añadir + buscador -->
+          <div id="task-row-1" style="display:flex; align-items:center; gap:8px; padding:12px 16px; border-bottom:1px solid #f1f5f9;">
+            <form id="taskForm" style="display:flex; align-items:center; gap:8px; flex:1; min-width:0; margin:0;">
+              <input
+                type="text"
+                id="taskInput"
+                placeholder="Ej: Reservar hotel"
+                style="flex:1; min-width:0; height:38px; border-radius:8px; border:1px solid #e5e7eb;
+                       padding:0 12px; font-size:13px; background:#f9fafb; color:#111827;
+                       outline:none; transition:border 0.15s;"
+                onfocus="this.style.boxShadow='0 0 0 3px rgba(99,102,241,0.15)'"
+                onblur="this.style.boxShadow='none'"
+              >
+              <button type="submit"
+                style="height:38px; padding:0 16px; background:#4f46e5; color:#fff; border:none;
+                       border-radius:8px; font-size:13px; font-weight:600; cursor:pointer;
+                       white-space:nowrap; display:flex; align-items:center; gap:6px; transition:background 0.15s;"
+                onmouseover="this.style.background='#4338ca'"
+                onmouseout="this.style.background='#4f46e5'">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+                </svg>
+                Añadir
+              </button>
+            </form>
+            <div style="position:relative; flex-shrink:0;">
+              <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);pointer-events:none;color:#9ca3af;"
+                   width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="8"/>
+                <path stroke-linecap="round" d="M21 21l-4.35-4.35"/>
+              </svg>
+              <input type="text" id="searchTask" placeholder="Buscar tarea..."
+                style="width:160px; height:38px; padding:0 12px 0 32px; border-radius:8px;
+                       border:1px solid #e5e7eb; font-size:13px; background:#f9fafb; color:#111827;
+                       outline:none; transition:border 0.15s;"
+                onfocus="this.style.boxShadow='0 0 0 3px rgba(99,102,241,0.15)'"
+                onblur="this.style.boxShadow='none'"
+              >
+            </div>
           </div>
+
+          <!-- Fila 2: filtros + acciones -->
+          <div id="task-row-2"
+            style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap;
+                   gap:8px; padding:8px 16px; background:#f9fafb; border-bottom:1px solid #f1f5f9;">
+            <div style="display:flex; gap:8px; align-items:center;">
+              <select id="statusFilter"
+                style="height:30px; padding:0 8px; border-radius:6px; border:1px solid #e5e7eb;
+                       font-size:12px; background:#fff; color:#374151; cursor:pointer; outline:none;">
+                <option value="all">Todas</option>
+                <option value="pending">Pendientes</option>
+                <option value="completed">Completadas</option>
+              </select>
+              <select id="sortOrder"
+                style="height:30px; padding:0 8px; border-radius:6px; border:1px solid #e5e7eb;
+                       font-size:12px; background:#fff; color:#374151; cursor:pointer; outline:none;">
+                <option value="newest">Más recientes</option>
+                <option value="oldest">Más antiguas</option>
+                <option value="alphabetical">Alfabético</option>
+              </select>
+            </div>
+            <div style="display:flex; gap:8px; align-items:center;">
+              <button id="completeAll"
+                style="height:30px; padding:0 12px; border-radius:6px; border:1px solid #d1fae5;
+                       background:transparent; color:#059669; font-size:12px; font-weight:500;
+                       cursor:pointer; display:flex; align-items:center; gap:5px; transition:background 0.15s;"
+                onmouseover="this.style.background='#ecfdf5'"
+                onmouseout="this.style.background='transparent'">
+                <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                Completar todas
+              </button>
+              <button id="clearCompleted"
+                style="height:30px; padding:0 12px; border-radius:6px; border:1px solid #e5e7eb;
+                       background:transparent; color:#6b7280; font-size:12px; font-weight:500;
+                       cursor:pointer; display:flex; align-items:center; gap:5px; transition:background 0.15s;"
+                onmouseover="this.style.background='#f3f4f6'"
+                onmouseout="this.style.background='transparent'">
+                <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                </svg>
+                Limpiar completadas
+              </button>
+            </div>
+          </div>
+
+          <!-- Lista de tareas -->
+          <ul id="taskList" style="list-style:none; margin:0; padding:0;"></ul>
+
+          <!-- Mensaje vacío -->
+          <p id="emptyMessage"
+             style="display:none; padding:48px 16px; text-align:center; font-size:13px; color:#9ca3af;">
+            ✈️ No hay tareas todavía
+          </p>
+
+          <!-- Barra de progreso -->
+          <div id="task-footer" style="padding:10px 16px; background:#f9fafb; border-top:1px solid #f1f5f9; display:flex; align-items:center; gap:12px;">
+            <span id="progress-label" style="font-size:11px; color:#9ca3af; white-space:nowrap;">Progreso actual</span>
+            <div id="progress-track" style="flex:1; height:6px; background:#e5e7eb; border-radius:999px; overflow:hidden;">
+              <div id="progressBar" style="width:0%; height:100%; background:#10b981; border-radius:999px; transition:width 0.5s ease;"></div>
+            </div>
+            <span id="progressText" style="font-size:11px; color:#9ca3af; white-space:nowrap;"></span>
+          </div>
+
         </div>
-        <span id="progressText" style="font-size:11px; color:#9ca3af; white-space:nowrap;"></span>
       </div>
-
-    </div>
-  </div>
-</section>
-
+    </section>
   </main>
-  
+
   <footer class="bg-gray-900 text-white text-center py-6 dark:bg-black">
     <p>© 2026 TravelDream | Todos los derechos reservados</p>
   </footer>
