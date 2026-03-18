@@ -22,7 +22,11 @@
     animation: fade-up 600ms ease-out forwards;
   }
 }
-
+@layer components {
+  .btn-success {
+    @apply bg-green-500 text-white hover:bg-green-600 transition;
+  }
+}
 @keyframes fade-up {
   to {
     opacity: 1;

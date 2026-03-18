@@ -1,8 +1,3 @@
-/**
- * Capa de UI para las tareas: DOM + eventos.
- * Depende de `TaskStore` definido en `tasks.js`.
- */
-
 /** @type {HTMLFormElement | null} */
 const form = document.getElementById("taskForm");
 /** @type {HTMLInputElement | null} */
@@ -22,6 +17,10 @@ const sortOrder = document.getElementById("sortOrder");
 /** @type {HTMLButtonElement | null} */
 const clearCompletedBtn = document.getElementById("clearCompleted");
 
+const completeAllBtn = document.getElementById("completeAll");
+const progressBar = document.getElementById("progressBar");
+const progressText = document.getElementById("progressText");
+
 /** @type {"all" | "pending" | "completed"} */
 let currentStatusFilter = "all";
 /** @type {"newest" | "oldest" | "alphabetical"} */
@@ -30,37 +29,81 @@ let currentSortOrder = "newest";
 let currentSearchText = "";
 
 /**
- * Renderiza una tarea en la lista del DOM y registra sus handlers.
- * @param {Task} task
- * @returns {void}
+ * Renderiza una tarea como elemento <li>.
+ * El check funciona clicando en la fila (clase toggle-btn).
+ * @param {import('./tasks.js').Task} task
+ * @returns {HTMLLIElement}
  */
 function renderTask(task) {
-  if (!list) return;
-
   const li = document.createElement("li");
-  li.dataset.id = String(task.id);
-  li.dataset.text = task.text.toLowerCase();
+  li.dataset.id = task.id;
+  li.style.cssText = `
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 1px solid #f1f5f9;
+    transition: background 0.15s;
+    cursor: pointer;
+  `;
 
-  const span = document.createElement("span");
-  span.textContent = task.text;
-  if (task.completed) {
-    span.classList.add("completed");
-  }
+  li.innerHTML = `
+    <div class="toggle-btn" style="display:flex; align-items:center; gap:10px; flex:1; min-width:0;">
+      <!-- Círculo check -->
+      <div style="
+        width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0;
+        display: flex; align-items: center; justify-content: center;
+        ${task.completed
+          ? "background: #10b981; border: 2px solid #10b981;"
+          : "border: 2px solid #d1d5db; background: transparent;"}
+      ">
+        ${task.completed
+          ? `<svg width="11" height="11" fill="none" stroke="white" stroke-width="3" viewBox="0 0 24 24">
+               <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+             </svg>`
+          : ""}
+      </div>
 
-   const editButton = document.createElement("button");
-   editButton.textContent = "✏️";
-   editButton.type = "button";
-   editButton.classList.add("edit-btn");
+      <!-- Texto -->
+      <span style="
+        font-size: 14px;
+        white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        ${task.completed
+          ? "text-decoration: line-through; color: #9ca3af;"
+          : "font-weight: 500; color: #111827;"}
+      ">${task.text}</span>
+    </div>
 
-  const deleteButton = document.createElement("button");
-  deleteButton.textContent = "🗑";
-  deleteButton.type = "button";
-  deleteButton.classList.add("delete-btn");
+    <!-- Acciones -->
+    <div class="task-actions" style="display:flex; gap:4px; flex-shrink:0; margin-left:8px;">
+      <button class="edit-btn" title="Editar" style="
+        padding: 5px; border: none; background: transparent;
+        color: #9ca3af; cursor: pointer; border-radius: 6px;
+        display: flex; align-items: center; justify-content: center;
+        transition: color 0.15s, background 0.15s;
+      " onmouseover="this.style.color='#4f46e5';this.style.background='#eef2ff'"
+         onmouseout="this.style.color='#9ca3af';this.style.background='transparent'">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 012.828 2.828L11.828 15.828a2 2 0 01-1.414.586H8v-2.414a2 2 0 01.586-1.414z"/>
+        </svg>
+      </button>
+      <button class="delete-btn" title="Eliminar" style="
+        padding: 5px; border: none; background: transparent;
+        color: #9ca3af; cursor: pointer; border-radius: 6px;
+        display: flex; align-items: center; justify-content: center;
+        transition: color 0.15s, background 0.15s;
+      " onmouseover="this.style.color='#ef4444';this.style.background='#fef2f2'"
+         onmouseout="this.style.color='#9ca3af';this.style.background='transparent'">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+        </svg>
+      </button>
+    </div>
+  `;
 
-  li.appendChild(span);
-  li.appendChild(editButton);
-  li.appendChild(deleteButton);
-  list.appendChild(li);
+  return li;
 }
 
 /**
@@ -73,7 +116,6 @@ function renderAllTasks() {
 
   const tasks = TaskStore.getTasks();
 
-  // Filtro por estado
   let visible = tasks;
   if (currentStatusFilter === "completed") {
     visible = TaskStore.filterCompletedTasks(tasks);
@@ -81,27 +123,23 @@ function renderAllTasks() {
     visible = tasks.filter((task) => !task.completed);
   }
 
-  // Búsqueda por texto
-  const search = currentSearchText.trim().toLowerCase();
-  if (search) {
+  const searchText = currentSearchText.trim().toLowerCase();
+  if (searchText) {
     visible = visible.filter((task) =>
-      task.text.toLowerCase().includes(search)
+      task.text.toLowerCase().includes(searchText)
     );
   }
 
-  // Ordenación
   visible = visible.slice().sort((a, b) => {
-    if (currentSortOrder === "newest") {
-      return b.id - a.id;
-    }
-    if (currentSortOrder === "oldest") {
-      return a.id - b.id;
-    }
-    // alphabetical
+    if (currentSortOrder === "newest") return b.id - a.id;
+    if (currentSortOrder === "oldest") return a.id - b.id;
     return a.text.localeCompare(b.text, "es", { sensitivity: "base" });
   });
 
-  visible.forEach((task) => renderTask(task));
+  visible.forEach((task) => {
+    const li = renderTask(task);
+    list.appendChild(li);
+  });
 }
 
 /**
@@ -125,6 +163,28 @@ function updateCompletedCount() {
   completedCountEl.textContent = `${completed} completadas / ${tasks.length} total`;
 }
 
+function updateProgressBar() {
+  if (!progressBar || !progressText) return;
+
+  const tasks = TaskStore.getTasks();
+  const total = tasks.length;
+  const completed = TaskStore.filterCompletedTasks(tasks).length;
+  const percentage = total === 0 ? 0 : Math.round((completed / total) * 100);
+
+  progressBar.classList.remove("bg-red-500", "bg-yellow-400", "bg-green-500");
+
+  if (percentage < 30) {
+    progressBar.style.background = "#ef4444";
+  } else if (percentage < 70) {
+    progressBar.style.background = "#f59e0b";
+  } else {
+    progressBar.style.background = "#10b981";
+  }
+
+  progressBar.style.width = percentage + "%";
+  progressText.textContent = `${completed} de ${total} completadas`;
+}
+
 /**
  * Maneja el envío del formulario de nueva tarea.
  * @param {SubmitEvent} event
@@ -143,22 +203,13 @@ function handleFormSubmit(event) {
   }
 
   if (task) {
-    renderTask(task);
+    renderAllTasks();
     toggleEmptyMessage();
     updateCompletedCount();
+    updateProgressBar();
   }
 
   input.value = "";
-}
-
-/**
- * Filtra las tareas en el DOM según el texto de búsqueda.
- * @param {string} searchText
- * @returns {void}
- */
-function filterTasks(searchText) {
-  currentSearchText = searchText ?? "";
-  renderAllTasks();
 }
 
 /**
@@ -166,11 +217,11 @@ function filterTasks(searchText) {
  * @returns {void}
  */
 function initTasksUI() {
-  // Cargar tareas del store
   TaskStore.loadFromStorage();
   renderAllTasks();
   toggleEmptyMessage();
   updateCompletedCount();
+  updateProgressBar();
 
   if (form) {
     form.addEventListener("submit", handleFormSubmit);
@@ -178,7 +229,8 @@ function initTasksUI() {
 
   if (search) {
     search.addEventListener("input", () => {
-      filterTasks(search.value);
+      currentSearchText = search.value;
+      renderAllTasks();
     });
   }
 
@@ -210,6 +262,17 @@ function initTasksUI() {
       renderAllTasks();
       toggleEmptyMessage();
       updateCompletedCount();
+      updateProgressBar();
+    });
+  }
+
+  if (completeAllBtn) {
+    completeAllBtn.addEventListener("click", () => {
+      TaskStore.completeAllTasks();
+      renderAllTasks();
+      toggleEmptyMessage();
+      updateCompletedCount();
+      updateProgressBar();
     });
   }
 
@@ -222,17 +285,18 @@ function initTasksUI() {
       const id = Number(li.dataset.id);
       if (!Number.isFinite(id)) return;
 
-      if (target.matches("button.delete-btn")) {
+      if (target.closest("button.delete-btn")) {
         TaskStore.deleteTask(id);
         li.remove();
         toggleEmptyMessage();
         updateCompletedCount();
+        updateProgressBar();
         return;
       }
 
-      if (target.matches("button.edit-btn")) {
+      if (target.closest("button.edit-btn")) {
         const span = li.querySelector("span");
-        const currentText = span?.textContent ?? "";
+        const currentText = span?.textContent?.trim() ?? "";
         const newText = window.prompt("Editar tarea", currentText);
         if (newText == null) return;
 
@@ -248,14 +312,14 @@ function initTasksUI() {
         return;
       }
 
-      if (target.matches("span")) {
-        target.classList.toggle("completed");
+      if (target.closest(".toggle-btn")) {
         TaskStore.toggleTaskCompleted(id);
+        renderAllTasks();
         updateCompletedCount();
+        updateProgressBar();
       }
     });
   }
 }
 
 window.addEventListener("load", initTasksUI);
-

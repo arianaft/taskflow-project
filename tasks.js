@@ -200,6 +200,13 @@ const TaskStore = (() => {
     saveTasks();
   }
 
+  function completeAllTasks() {
+  tasks = tasks.map(task => ({
+    ...task,
+    completed: true
+  }));
+  saveTasks();
+}
   return {
     loadFromStorage,
     getTasks,
@@ -208,7 +215,8 @@ const TaskStore = (() => {
     toggleTaskCompleted,
     filterCompletedTasks,
     updateTaskText,
-    clearCompleted
+    clearCompleted,
+    completeAllTasks
   };
 })();
 
