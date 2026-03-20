@@ -1,24 +1,35 @@
-const express = require('express');
-const cors = require('cors');
+const express    = require('express');
+const cors       = require('cors');
 const taskRoutes = require('./routes/task.routes');
+const { PORT }   = require('./config/env');
 
-// Crear la app de Express
 const app = express();
 
-//Importa variable
-const { PORT } = require('./config/env');
-
-//Middlewares básicos
+// Middlewares 
+// cors: permite peticiones desde el frontend
 app.use(cors());
+// express.json: parsea el body de las peticiones como JSON
 app.use(express.json());
+
+// Rutas 
 app.use('/api/v1/tasks', taskRoutes);
 
-//Ruta de prueba
 app.get('/', (req, res) => {
-  res.json({ mensaje: "API TaskFlow funcionando" });
+  res.json({ mensaje: "API TaskFlow funcionando ✅" });
 });
 
-//Arranca el servidor
+//  Middleware de errores 
+app.use((err, req, res, next) => {
+  console.error('[ERROR]', err.message);
+
+  if (err.message === 'NOT_FOUND') {
+    return res.status(404).json({ error: 'Tarea no encontrada' });
+  }
+
+  res.status(500).json({ error: 'Error interno del servidor' });
+});
+
+// Arrancar 
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en puerto ${PORT}`);
+  console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
