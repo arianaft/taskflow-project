@@ -2,6 +2,8 @@ const express    = require('express');
 const cors       = require('cors');
 const taskRoutes = require('./routes/task.routes');
 const { PORT }   = require('./config/env');
+const swaggerUi   = require('swagger-ui-express');
+const swaggerSpec = require('./config/swagger');
 
 const app = express();
 
@@ -10,6 +12,7 @@ const app = express();
 app.use(cors());
 // express.json: parsea el body de las peticiones como JSON
 app.use(express.json());
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Rutas 
 app.use('/api/v1/tasks', taskRoutes);
