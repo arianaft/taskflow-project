@@ -3,7 +3,9 @@
  * Todas las peticiones HTTP al servidor Node.js pasan por aquí.
  */
 
-const BASE_URL = "http://localhost:3000/api/v1/tasks";
+const BASE_URL = window.location.hostname === "localhost"
+  ? "http://localhost:3000/api/v1/tasks"
+  : "/api/v1/tasks";
 
 /**
  * Helper interno: lanza error con mensaje legible si la respuesta no es 2xx.
