@@ -2,6 +2,7 @@
 
 Pequeña aplicación web para **planificar viajes** y gestionar una **lista de tareas**, desarrollada con **HTML**, **Tailwind CSS** y **JavaScript vanilla**. Me sirve como proyecto de práctica para buenas prácticas de JS, separación de capas y uso de `localStorage`.
 
+
 ## Funcionalidades
 
 - **Destinos**: tarjetas de París, Bali y Tokio con badges (`.badge`) y botones (`.btn-primary`).
@@ -37,3 +38,22 @@ Pequeña aplicación web para **planificar viajes** y gestionar una **lista de t
    - Haz clic en el texto para marcarla como completada.
    - Usa el buscador y los selectores de **Estado** y **Ordenar por** para filtrar/ordenar.
    - Usa **“Eliminar completadas”** para limpiar las tareas hechas.
+
+## Arquitectura
+
+- Frontend: HTML, CSS, JS
+- Backend: Node.js + Express
+- API REST: /api/v1/tasks
+
+## Endpoints
+
+GET /tasks  
+POST /tasks  
+DELETE /tasks/:id  
+
+## Tecnologías
+
+- Express
+- Fetch API
+- CORS
+- Nodemon

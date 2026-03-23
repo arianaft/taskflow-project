@@ -6,36 +6,39 @@ function obtenerTodas(req, res) {
 }
 
 function crearTarea(req, res) {
-  const { title } = req.body;
+  const { text } = req.body;
 
-  if (!title || typeof title !== "string" || title.trim().length < 3) {
+  if (!text || typeof text !== "string" || text.trim().length < 3) {
     return res.status(400).json({
-      error: "El título debe tener al menos 3 caracteres"
+      error: "El texto debe tener al menos 3 caracteres"
     });
   }
 
-  const nuevaTarea = taskService.crearTarea({ title });
-
+  const nuevaTarea = taskService.crearTarea({ text: text.trim() });
   res.status(201).json(nuevaTarea);
 }
 
-function eliminarTarea(req, res) {
-  const { id } = req.params;
-
+function eliminarTarea(req, res, next) {
   try {
-    taskService.eliminarTarea(id);
+    taskService.eliminarTarea(req.params.id);
     res.status(204).send();
   } catch (error) {
-    if (error.message === "NOT_FOUND") {
-      return res.status(404).json({ error: "Tarea no encontrada" });
-    }
+    next(error);
+  }
+}
 
-    res.status(500).json({ error: "Error interno" });
+function toggleTask(req, res, next) {
+  try {
+    const task = taskService.toggleTask(req.params.id);
+    res.json(task);
+  } catch (err) {
+    next(err);
   }
 }
 
 module.exports = {
   obtenerTodas,
   crearTarea,
-  eliminarTarea
+  eliminarTarea,
+  toggleTask,   
 };

@@ -1,418 +1,310 @@
-/** @type {HTMLFormElement | null} */
-const form = document.getElementById("taskForm");
-/** @type {HTMLInputElement | null} */
-const input = document.getElementById("taskInput");
-/** @type {HTMLUListElement | null} */
-const list = document.getElementById("taskList");
-/** @type {HTMLInputElement | null} */
-const search = document.getElementById("searchTask");
-/** @type {HTMLParagraphElement | null} */
-const emptyMessage = document.getElementById("emptyMessage");
-/** @type {HTMLParagraphElement | null} */
-const completedCountEl = document.getElementById("completedCount");
-/** @type {HTMLSelectElement | null} */
-const statusFilter = document.getElementById("statusFilter");
-/** @type {HTMLSelectElement | null} */
-const sortOrder = document.getElementById("sortOrder");
-/** @type {HTMLButtonElement | null} */
-const clearCompletedBtn = document.getElementById("clearCompleted");
-
-const completeAllBtn = document.getElementById("completeAll");
-const progressBar = document.getElementById("progressBar");
-const progressText = document.getElementById("progressText");
-
-/** @type {"all" | "pending" | "completed"} */
-let currentStatusFilter = "all";
-/** @type {"newest" | "oldest" | "alphabetical"} */
-let currentSortOrder = "newest";
-/** @type {string} */
-let currentSearchText = "";
-
 /**
- * Devuelve true si el modo oscuro está activo.
- * @returns {boolean}
+ * Capa de presentación.
+ * Gestiona los tres estados de red: carga, éxito y error.
  */
-function isDark() {
-  return document.documentElement.classList.contains("dark");
+
+import { fetchTasks, addTask, removeTask } from "./tasks.js";
+import { toggleTask } from "./api/client.js"
+
+//  ELEMENTOS DOM 
+const form           = document.getElementById("taskForm");
+const input          = document.getElementById("taskInput");
+const list           = document.getElementById("taskList");
+const emptyMessage   = document.getElementById("emptyMessage");
+const progressBar    = document.getElementById("progressBar");
+const progressText   = document.getElementById("progressText");
+const searchInput    = document.getElementById("searchTask");
+const statusFilter   = document.getElementById("statusFilter");
+const sortOrder      = document.getElementById("sortOrder");
+const completeAllBtn = document.getElementById("completeAll");
+const clearCompBtn   = document.getElementById("clearCompleted");
+
+// ESTADO LOCAL  
+let allTasks = [];
+
+//HELPERS DE ESTADO DE RED 
+
+//Muestra un spinner de carga en la lista 
+function setLoadingState() {
+  if (!list) return;
+  list.innerHTML = `
+    <li style="padding:32px 16px; text-align:center; color:#9ca3af; font-size:13px;">
+      <div class="spinner" style="
+        display:inline-block; width:22px; height:22px;
+        border:3px solid #e5e7eb; border-top-color:#4f46e5;
+        border-radius:50%; animation:spin 0.7s linear infinite;
+        margin-bottom:8px;
+      "></div>
+      <br>Cargando tareas…
+    </li>
+  `;
+  if (emptyMessage) emptyMessage.style.display = "none";
 }
 
-/**
- * Renderiza una tarea como elemento <li>.
- * @param {import('./tasks.js').Task} task
- * @returns {HTMLLIElement}
- */
-function renderTask(task) {
+//Muestra un error con mensaje descriptivo 
+function setErrorState(message) {
+  if (!list) return;
+  list.innerHTML = `
+    <li style="padding:32px 16px; text-align:center;">
+      <span style="font-size:28px;">⚠️</span>
+      <p style="margin:8px 0 4px; font-size:14px; font-weight:600; color:#dc2626;">
+        No se pudo conectar con el servidor
+      </p>
+      <p style="font-size:12px; color:#9ca3af; margin:0;">${message}</p>
+      <button onclick="renderAllTasks()"
+        style="margin-top:14px; padding:6px 16px; border-radius:6px; border:1px solid #e5e7eb;
+               background:#f9fafb; font-size:12px; cursor:pointer; color:#374151;">
+        🔄 Reintentar
+      </button>
+    </li>
+  `;
+}
+
+//Renderiza las tareas filtradas/ordenadas en pantalla 
+function renderTasks() {
+  if (!list) return;
+
+  const query  = (searchInput?.value ?? "").toLowerCase().trim();
+  const filter = statusFilter?.value ?? "all";
+  const order  = sortOrder?.value ?? "newest";
+
+  let visible = allTasks
+    .filter(t => {
+      if (filter === "pending")   return !t.completed;
+      if (filter === "completed") return  t.completed;
+      return true;
+    })
+    .filter(t => !query || t.text.toLowerCase().includes(query));
+
+  if (order === "oldest")       visible = [...visible].reverse();
+  else if (order === "alphabetical") visible = [...visible].sort((a, b) => a.text.localeCompare(b.text));
+
+  list.innerHTML = "";
+
+  if (visible.length === 0) {
+    if (emptyMessage) emptyMessage.style.display = "block";
+    updateProgress();
+    return;
+  }
+
+  if (emptyMessage) emptyMessage.style.display = "none";
+
+  visible.forEach(task => {
+    const li = buildTaskElement(task);
+    list.appendChild(li);
+  });
+
+  updateProgress();
+}
+
+//Construye el elemento <li> de una tarea 
+function buildTaskElement(task) {
   const li = document.createElement("li");
   li.dataset.id = task.id;
-
-  const dark = isDark();
-  const bg        = dark ? "#1f2937" : "#ffffff";
-  const border    = dark ? "#374151" : "#f1f5f9";
-  const textColor = dark ? "#e5e7eb" : "#111827";
-  const mutedColor= dark ? "#9ca3af" : "#9ca3af";
-  const iconColor = dark ? "#6b7280" : "#9ca3af";
-
   li.style.cssText = `
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 16px;
-    border-bottom: 1px solid ${border};
-    background: ${bg};
-    transition: background 0.15s;
-    cursor: pointer;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:10px 16px; border-bottom:1px solid #f1f5f9;
+    transition:background 0.15s;
   `;
 
   li.innerHTML = `
-    <div class="toggle-btn" style="display:flex; align-items:center; gap:10px; flex:1; min-width:0;">
-      <div style="
-        width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0;
-        display: flex; align-items: center; justify-content: center;
-        ${task.completed
-          ? "background: #10b981; border: 2px solid #10b981;"
-          : `border: 2px solid ${dark ? "#6b7280" : "#d1d5db"}; background: transparent;`}
-      ">
-        ${task.completed
-          ? `<svg width="11" height="11" fill="none" stroke="white" stroke-width="3" viewBox="0 0 24 24">
-               <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-             </svg>`
-          : ""}
-      </div>
+    <label style="display:flex; gap:10px; align-items:center; cursor:pointer; flex:1; min-width:0;">
+      <input type="checkbox" ${task.completed ? "checked" : ""}
+        style="accent-color:#4f46e5; width:16px; height:16px; cursor:pointer; flex-shrink:0;" />
       <span style="
-        font-size: 14px;
-        white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-        ${task.completed
-          ? `text-decoration: line-through; color: ${mutedColor};`
-          : `font-weight: 500; color: ${textColor};`}
-      ">${task.text}</span>
-    </div>
-
-    <div class="task-actions" style="display:flex; gap:4px; flex-shrink:0; margin-left:8px;">
-      <button class="edit-btn" title="Editar" style="
-        padding: 5px; border: none; background: transparent;
-        color: ${iconColor}; cursor: pointer; border-radius: 6px;
-        display: flex; align-items: center; justify-content: center;
-        transition: color 0.15s, background 0.15s;
-      " onmouseover="this.style.color='#4f46e5';this.style.background='#eef2ff'"
-         onmouseout="this.style.color='${iconColor}';this.style.background='transparent'">
-        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round"
-            d="M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 012.828 2.828L11.828 15.828a2 2 0 01-1.414.586H8v-2.414a2 2 0 01.586-1.414z"/>
-        </svg>
-      </button>
-      <button class="delete-btn" title="Eliminar" style="
-        padding: 5px; border: none; background: transparent;
-        color: ${iconColor}; cursor: pointer; border-radius: 6px;
-        display: flex; align-items: center; justify-content: center;
-        transition: color 0.15s, background 0.15s;
-      " onmouseover="this.style.color='#ef4444';this.style.background='#fef2f2'"
-         onmouseout="this.style.color='${iconColor}';this.style.background='transparent'">
-        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round"
-            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-        </svg>
-      </button>
-    </div>
+        font-size:13px; color:#111827;
+        ${task.completed ? "text-decoration:line-through; color:#9ca3af;" : ""}
+        white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+      ">${escapeHtml(task.text)}</span>
+    </label>
+    <button class="delete-btn" title="Eliminar"
+      style="flex-shrink:0; background:none; border:none; cursor:pointer;
+             color:#d1d5db; font-size:16px; padding:4px 6px; border-radius:6px;
+             transition:color 0.15s;"
+      onmouseover="this.style.color='#ef4444'"
+      onmouseout="this.style.color='#d1d5db'">
+      ✕
+    </button>
   `;
 
   return li;
 }
 
-/**
- * Vuelve a renderizar toda la lista desde el estado del store.
- * @returns {void}
- */
-function renderAllTasks() {
-  if (!list) return;
-  list.innerHTML = "";
-
-  const tasks = TaskStore.getTasks();
-
-  let visible = tasks;
-  if (currentStatusFilter === "completed") {
-    visible = TaskStore.filterCompletedTasks(tasks);
-  } else if (currentStatusFilter === "pending") {
-    visible = tasks.filter((task) => !task.completed);
-  }
-
-  const searchText = currentSearchText.trim().toLowerCase();
-  if (searchText) {
-    visible = visible.filter((task) =>
-      task.text.toLowerCase().includes(searchText)
-    );
-  }
-
-  visible = visible.slice().sort((a, b) => {
-    if (currentSortOrder === "newest") return b.id - a.id;
-    if (currentSortOrder === "oldest") return a.id - b.id;
-    return a.text.localeCompare(b.text, "es", { sensitivity: "base" });
-  });
-
-  visible.forEach((task) => {
-    const li = renderTask(task);
-    list.appendChild(li);
-  });
-}
-
-/**
- * Muestra u oculta el mensaje de lista vacía.
- * @returns {void}
- */
-function toggleEmptyMessage() {
-  if (!emptyMessage) return;
-  const tasks = TaskStore.getTasks();
-  emptyMessage.style.display = tasks.length === 0 ? "block" : "none";
-}
-
-/**
- * Actualiza el contador visible de tareas completadas.
- * @returns {void}
- */
-function updateCompletedCount() {
-  if (!completedCountEl) return;
-  const tasks = TaskStore.getTasks();
-  const completed = TaskStore.filterCompletedTasks(tasks).length;
-  completedCountEl.textContent = `${completed} completadas / ${tasks.length} total`;
-}
-
-function updateProgressBar() {
+//Actualiza la barra de progreso 
+function updateProgress() {
   if (!progressBar || !progressText) return;
-
-  const tasks = TaskStore.getTasks();
-  const total = tasks.length;
-  const completed = TaskStore.filterCompletedTasks(tasks).length;
-  const percentage = total === 0 ? 0 : Math.round((completed / total) * 100);
-
-  if (percentage < 30) {
-    progressBar.style.background = "#ef4444";
-  } else if (percentage < 70) {
-    progressBar.style.background = "#f59e0b";
-  } else {
-    progressBar.style.background = "#10b981";
-  }
-
-  progressBar.style.width = percentage + "%";
-  progressText.textContent = `${completed} de ${total} completadas`;
+  const total     = allTasks.length;
+  const completed = allTasks.filter(t => t.completed).length;
+  const pct       = total === 0 ? 0 : Math.round((completed / total) * 100);
+  progressBar.style.width  = `${pct}%`;
+  progressText.textContent = total === 0 ? "" : `${completed}/${total}`;
 }
 
-/**
- * Actualiza los colores del widget según el tema activo.
- * Se llama al cambiar de tema y al iniciar.
- * @returns {void}
- */
-function applyWidgetTheme() {
-  const dark = isDark();
-  const widget       = document.getElementById("task-widget");
-  const row1         = document.getElementById("task-row-1");
-  const row2         = document.getElementById("task-row-2");
-  const taskFooter   = document.getElementById("task-footer");
-  const progressTrack= document.getElementById("progress-track");
-
-  if (widget) {
-    widget.style.background   = dark ? "#1f2937" : "#ffffff";
-    widget.style.borderColor  = dark ? "#374151" : "#e5e7eb";
-  }
-  if (row1) {
-    row1.style.borderBottomColor = dark ? "#374151" : "#f1f5f9";
-  }
-  if (row2) {
-    row2.style.background        = dark ? "#111827" : "#f9fafb";
-    row2.style.borderBottomColor = dark ? "#374151" : "#f1f5f9";
-  }
-  if (taskFooter) {
-    taskFooter.style.background   = dark ? "#111827" : "#f9fafb";
-    taskFooter.style.borderTopColor= dark ? "#374151" : "#f1f5f9";
-  }
-  if (progressTrack) {
-    progressTrack.style.background = dark ? "#374151" : "#e5e7eb";
-  }
-  if (emptyMessage) {
-    emptyMessage.style.color      = dark ? "#6b7280" : "#9ca3af";
-    emptyMessage.style.background = dark ? "#1f2937" : "#ffffff";
-  }
-
-  // Inputs
-  [document.getElementById("taskInput"), document.getElementById("searchTask")].forEach(el => {
-    if (!el) return;
-    el.style.background   = dark ? "#374151" : "#f9fafb";
-    el.style.color        = dark ? "#f3f4f6" : "#111827";
-    el.style.borderColor  = dark ? "#4b5563" : "#e5e7eb";
-  });
-
-  // Selects
-  [document.getElementById("statusFilter"), document.getElementById("sortOrder")].forEach(el => {
-    if (!el) return;
-    el.style.background  = dark ? "#374151" : "#ffffff";
-    el.style.color       = dark ? "#f3f4f6" : "#374151";
-    el.style.borderColor = dark ? "#4b5563" : "#e5e7eb";
-  });
-
-  // Textos de progreso
-  ["progress-label", "progressText"].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.style.color = dark ? "#6b7280" : "#9ca3af";
-  });
-
-  // Botón completar todas
-  const completeAllEl = document.getElementById("completeAll");
-  if (completeAllEl) {
-    completeAllEl.style.color       = dark ? "#34d399" : "#059669";
-    completeAllEl.style.borderColor = dark ? "#065f46" : "#d1fae5";
-  }
-
-  // Botón limpiar completadas
-  const clearCompletedEl = document.getElementById("clearCompleted");
-  if (clearCompletedEl) {
-    clearCompletedEl.style.color       = dark ? "#9ca3af" : "#6b7280";
-    clearCompletedEl.style.borderColor = dark ? "#4b5563" : "#e5e7eb";
-  }
-
-  // Re-renderizar tareas para actualizar sus colores
-  renderAllTasks();
+//Escapa HTML para evitar XSS 
+function escapeHtml(str) {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
 }
 
-/**
- * Maneja el envío del formulario de nueva tarea.
- * @param {SubmitEvent} event
- * @returns {void}
- */
-function handleFormSubmit(event) {
-  event.preventDefault();
+//CARGA PRINCIPAL
+
+//Carga las tareas del servidor y gestiona los tres estados 
+async function renderAllTasks() {
+  setLoadingState();
+  await new Promise(r => setTimeout(r, 1500));
+  try {
+    allTasks = await fetchTasks();
+    renderTasks();
+  } catch (err) {
+    setErrorState(err.message);
+  }
+}
+
+// Exponemos para que el botón "Reintentar" del HTML inline pueda llamarla
+window.renderAllTasks = renderAllTasks;
+
+//CREA TAREA 
+
+async function handleFormSubmit(e) {
+  e.preventDefault();
   if (!input) return;
 
-  const rawText = input.value;
-  const { task, error } = TaskStore.addTask(rawText);
+  const submitBtn = form?.querySelector("button[type=submit]");
+  const originalText = submitBtn?.innerHTML ?? "";
 
-  if (error) {
-    alert(error);
+  // Deshabilitar botón mientras se envía
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = "⏳";
+  }
+
+  try {
+    const result = await addTask(input.value);
+
+    if (result.error) {
+      showInlineError(result.error);
+      return;
+    }
+
+    input.value = "";
+    clearInlineError();
+    await renderAllTasks();
+
+  } catch (err) {
+    showInlineError(`Error de red: ${err.message}`);
+  } finally {
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalText;
+    }
+  }
+}
+
+//Muestra un mensaje de error debajo del formulario 
+function showInlineError(msg) {
+  let el = document.getElementById("form-error");
+  if (!el) {
+    el = document.createElement("p");
+    el.id = "form-error";
+    el.style.cssText = "margin:4px 16px 0; font-size:12px; color:#dc2626;";
+    form?.after(el);
+  }
+  el.textContent = msg;
+}
+
+function clearInlineError() {
+  const el = document.getElementById("form-error");
+  if (el) el.remove();
+}
+
+//DELEGACIÓN DE EVENTOS EN LA LISTA
+
+async function handleListClick(e) {
+  const li = e.target.closest("li");
+  if (!li) return;
+
+  const id = li.dataset.id;
+
+  // TOGGLE (checkbox)
+  if (e.target.type === "checkbox") {
+    e.target.disabled = true; 
+    try {
+      await toggleTask(id);
+     
+      const task = allTasks.find(t => t.id === id);
+      if (task) task.completed = !task.completed;
+      renderTasks();
+    } catch (err) {
+      alert(`No se pudo actualizar la tarea: ${err.message}`);
+      e.target.disabled = false;
+      renderTasks(); 
+    }
     return;
   }
 
-  if (task) {
-    renderAllTasks();
-    toggleEmptyMessage();
-    updateCompletedCount();
-    updateProgressBar();
-  }
-
-  input.value = "";
-}
-
-/**
- * Inicializa listeners y render de tareas.
- * @returns {void}
- */
-function initTasksUI() {
-  TaskStore.loadFromStorage();
-  applyWidgetTheme();
-  toggleEmptyMessage();
-  updateCompletedCount();
-  updateProgressBar();
-
-  // Escuchar cambios de tema desde theme.js
-  const observer = new MutationObserver(() => {
-    applyWidgetTheme();
-    updateProgressBar();
-  });
-  observer.observe(document.documentElement, { attributeFilter: ["class"] });
-
-  if (form) {
-    form.addEventListener("submit", handleFormSubmit);
-  }
-
-  if (search) {
-    search.addEventListener("input", () => {
-      currentSearchText = search.value;
-      renderAllTasks();
-    });
-  }
-
-  if (statusFilter) {
-    statusFilter.addEventListener("change", () => {
-      const value = statusFilter.value;
-      if (value === "all" || value === "pending" || value === "completed") {
-        currentStatusFilter = value;
-        renderAllTasks();
-        toggleEmptyMessage();
-        updateCompletedCount();
-      }
-    });
-  }
-
-  if (sortOrder) {
-    sortOrder.addEventListener("change", () => {
-      const value = sortOrder.value;
-      if (value === "newest" || value === "oldest" || value === "alphabetical") {
-        currentSortOrder = value;
-        renderAllTasks();
-      }
-    });
-  }
-
-  if (clearCompletedBtn) {
-    clearCompletedBtn.addEventListener("click", () => {
-      TaskStore.clearCompleted();
-      renderAllTasks();
-      toggleEmptyMessage();
-      updateCompletedCount();
-      updateProgressBar();
-    });
-  }
-
-  if (completeAllBtn) {
-    completeAllBtn.addEventListener("click", () => {
-      TaskStore.completeAllTasks();
-      renderAllTasks();
-      toggleEmptyMessage();
-      updateCompletedCount();
-      updateProgressBar();
-    });
-  }
-
-  if (list) {
-    list.addEventListener("click", (event) => {
-      const target = /** @type {HTMLElement} */ (event.target);
-      const li = target.closest("li");
-      if (!li) return;
-
-      const id = Number(li.dataset.id);
-      if (!Number.isFinite(id)) return;
-
-      if (target.closest("button.delete-btn")) {
-        TaskStore.deleteTask(id);
-        li.remove();
-        toggleEmptyMessage();
-        updateCompletedCount();
-        updateProgressBar();
-        return;
-      }
-
-      if (target.closest("button.edit-btn")) {
-        const span = li.querySelector("span");
-        const currentText = span?.textContent?.trim() ?? "";
-        const newText = window.prompt("Editar tarea", currentText);
-        if (newText == null) return;
-
-        const result = TaskStore.updateTaskText(id, newText);
-        if (result.error) {
-          alert(result.error);
-          return;
-        }
-
-        renderAllTasks();
-        updateCompletedCount();
-        toggleEmptyMessage();
-        return;
-      }
-
-      if (target.closest(".toggle-btn")) {
-        TaskStore.toggleTaskCompleted(id);
-        renderAllTasks();
-        updateCompletedCount();
-        updateProgressBar();
-      }
-    });
+  // DELETE
+  if (e.target.classList.contains("delete-btn") || e.target.closest(".delete-btn")) {
+    li.style.opacity = "0.4";
+    try {
+      await removeTask(id);
+      allTasks = allTasks.filter(t => t.id !== id);
+      renderTasks();
+    } catch (err) {
+      alert(`No se pudo eliminar la tarea: ${err.message}`);
+      li.style.opacity = "1";
+    }
   }
 }
 
-window.addEventListener("load", initTasksUI);
+//COMPLETA TODAS 
+
+async function handleCompleteAll() {
+  const pending = allTasks.filter(t => !t.completed);
+  if (pending.length === 0) return;
+
+  try {
+    await Promise.all(pending.map(t => toggleTask(t.id)));
+    await renderAllTasks();
+  } catch (err) {
+    alert(`Error al completar tareas: ${err.message}`);
+  }
+}
+
+//LIMPIA COMPLETADAS 
+
+async function handleClearCompleted() {
+  const completed = allTasks.filter(t => t.completed);
+  if (completed.length === 0) return;
+
+  try {
+    await Promise.all(completed.map(t => removeTask(t.id)));
+    allTasks = allTasks.filter(t => !t.completed);
+    renderTasks();
+  } catch (err) {
+    alert(`Error al eliminar tareas: ${err.message}`);
+  }
+}
+
+//INICIALIZACIÓN 
+
+function init() {
+  renderAllTasks();
+
+  form?.addEventListener("submit", handleFormSubmit);
+  list?.addEventListener("click", handleListClick);
+  searchInput?.addEventListener("input", renderTasks);
+  statusFilter?.addEventListener("change", renderTasks);
+  sortOrder?.addEventListener("change", renderTasks);
+  completeAllBtn?.addEventListener("click", handleCompleteAll);
+  clearCompBtn?.addEventListener("click", handleClearCompleted);
+}
+
+window.addEventListener("load", init);
+
+// CSS: animación del spinner 
+const style = document.createElement("style");
+style.textContent = `@keyframes spin { to { transform: rotate(360deg); } }`;
+document.head.appendChild(style);
