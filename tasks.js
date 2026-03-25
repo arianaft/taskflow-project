@@ -5,7 +5,7 @@
  * @property {boolean} completed
  */
 
-import { getTasks, createTask, deleteTask } from "./api/client.js";
+import { getTasks, createTask, deleteTask } from "./network/client.js";
 
 /**
  * Validación del texto de una tarea

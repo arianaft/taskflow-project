@@ -4,7 +4,7 @@
  */
 
 import { fetchTasks, addTask, removeTask } from "./tasks.js";
-import { toggleTask } from "./api/client.js"
+import { toggleTask } from "./network/client.js";
 
 //  ELEMENTOS DOM 
 const form           = document.getElementById("taskForm");
