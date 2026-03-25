@@ -12,6 +12,17 @@ const app = express();
 app.use(cors());
 // express.json: parsea el body de las peticiones como JSON
 app.use(express.json());
+// Middleware de auditoría de peticiones
+const loggerAcademico = (req, res, next) => {
+  const inicio = performance.now();
+  res.on('finish', () => {
+    const duracion = performance.now() - inicio;
+    console.log(`[${req.method}] ${req.originalUrl} - Estado: ${res.statusCode} (${duracion.toFixed(2)}ms)`);
+  });
+  next();
+};
+
+app.use(loggerAcademico);
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Rutas 
@@ -33,6 +44,10 @@ app.use((err, req, res, next) => {
 });
 
 // Arrancar 
-app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Servidor corriendo en http://localhost:${PORT}`);
+  });
+}
+
+module.exports = app;
