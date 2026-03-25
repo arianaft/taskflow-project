@@ -1,35 +1,9 @@
 {
   "version": 2,
-  "builds": [
+  "rewrites": [
     {
-      "src": "server/src/index.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "*.{html,css,js}",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "api/*.js",
-      "use": "@vercel/static"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/api/v1.*",
-      "dest": "server/src/index.js"
-    },
-    {
-      "src": "/(tasks-ui\\.js|tasks\\.js|theme\\.js|style\\.css)",
-      "dest": "/$1"
-    },
-    {
-      "src": "/api/(client\\.js)",
-      "dest": "/api/$1"
-    },
-    {
-      "src": "/",
-      "dest": "/index.html"
+      "source": "/api/v1/:path*",
+      "destination": "/api/index.js"
     }
   ]
 }
