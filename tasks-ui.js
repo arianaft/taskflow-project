@@ -3,8 +3,7 @@
  * Gestiona los tres estados de red: carga, éxito y error.
  */
 
-import { fetchTasks, addTask, removeTask } from "./tasks.js";
-import { toggleTask } from "./network/client.js";
+import { getTasks, createTask, deleteTask, toggleTask } from "./network/client.js";
 
 //  ELEMENTOS DOM 
 const form           = document.getElementById("taskForm");
@@ -156,7 +155,7 @@ async function renderAllTasks() {
   setLoadingState();
   await new Promise(r => setTimeout(r, 1500));
   try {
-    allTasks = await fetchTasks();
+    allTasks = await getTasks();
     renderTasks();
   } catch (err) {
     setErrorState(err.message);
@@ -182,20 +181,15 @@ async function handleFormSubmit(e) {
   }
 
   try {
-    const result = await addTask(input.value);
-
-    if (result.error) {
-      showInlineError(result.error);
-      return;
-    }
-
+    await createTask(input.value);
     input.value = "";
     clearInlineError();
     await renderAllTasks();
 
   } catch (err) {
-    showInlineError(`Error de red: ${err.message}`);
-  } finally {
+    showInlineError(`Error: ${err.message}`);
+  }
+ finally {
     if (submitBtn) {
       submitBtn.disabled = false;
       submitBtn.innerHTML = originalText;
@@ -232,7 +226,7 @@ async function handleListClick(e) {
   if (e.target.type === "checkbox") {
     e.target.disabled = true; 
     try {
-      await toggleTask(id);
+      await deleteTask(id);
      
       const task = allTasks.find(t => t.id === id);
       if (task) task.completed = !task.completed;
@@ -280,7 +274,7 @@ async function handleClearCompleted() {
   if (completed.length === 0) return;
 
   try {
-    await Promise.all(completed.map(t => removeTask(t.id)));
+    await Promise.all(completed.map(t => deleteTask(t.id)));
     allTasks = allTasks.filter(t => !t.completed);
     renderTasks();
   } catch (err) {
