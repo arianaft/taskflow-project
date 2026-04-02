@@ -1,90 +1,144 @@
-# Herramientas del ecosistema backend
+# 🛠️ Herramientas del backend — ¿Qué son y para qué sirven?
+
+Este documento explica las herramientas más utilizadas en el desarrollo y mantenimiento de APIs backend con Node.js y Express.
+
+---
 
 ## Axios
 
-Axios es una librería HTTP para JavaScript disponible tanto en el navegador como en Node.js. 
-A diferencia de `fetch`, incluye funcionalidades extra sin configuración adicional.
+### ¿Qué es?
+Axios es una librería JavaScript para realizar peticiones HTTP tanto desde el navegador como desde Node.js. Es una alternativa más completa a la API nativa `fetch`.
 
-**¿Por qué se usa?**
-- Convierte automáticamente las respuestas a JSON sin necesidad de llamar a `.json()`
-- Permite interceptores globales para añadir tokens de autenticación en cada petición
-- Maneja errores HTTP automáticamente (fetch no lanza error en respuestas 4xx/5xx)
-- Compatible con Node.js sin polyfills adicionales
+### ¿Para qué sirve?
+- Hacer peticiones GET, POST, PUT, PATCH, DELETE a una API REST
+- Interceptar peticiones y respuestas para añadir cabeceras, tokens o gestionar errores globalmente
+- Cancelar peticiones en curso
+- Transformar automáticamente la respuesta JSON sin necesidad de llamar `.json()`
+- Gestionar timeouts de forma sencilla
 
-**Ejemplo:**
+### ¿Por qué se usa?
+`fetch` es la opción nativa del navegador pero tiene limitaciones: no lanza errores automáticamente en respuestas 4xx/5xx, requiere dos pasos para leer el JSON y no soporta interceptores. Axios resuelve todo esto de forma más elegante y consistente.
+
+### Ejemplo comparativo
+
+Con `fetch`:
 ```js
-const { data } = await axios.get('http://localhost:3000/api/v1/tasks');
-console.log(data); // array de tareas, ya parseado
+const res = await fetch('/api/v1/tasks');
+if (!res.ok) throw new Error('Error');
+const data = await res.json();
+```
 
-await axios.post('http://localhost:3000/api/v1/tasks', { text: 'Reservar hotel' });
+Con `axios`:
+```js
+const { data } = await axios.get('/api/v1/tasks');
+// lanza error automáticamente si !res.ok
+// .json() no hace falta, ya viene parseado
 ```
 
 ---
 
-## Postman / Thunder Client
+## Postman
 
-Herramientas gráficas para probar APIs REST sin necesidad de escribir código ni tener 
-un frontend. Permiten enviar peticiones HTTP y ver las respuestas de forma visual.
+### ¿Qué es?
+Postman es una aplicación de escritorio y web para probar, documentar y compartir APIs REST. Es la herramienta de referencia en la industria para el trabajo con APIs.
 
-**¿Por qué se usan?**
-- Verificar que los endpoints responden correctamente antes de conectar el frontend
-- Forzar errores intencionados (400, 404, 500) para comprobar el manejo de excepciones
-- Guardar colecciones de peticiones reutilizables y compartibles con el equipo
-- Thunder Client funciona directamente dentro de VSCode sin instalar nada externo
+### ¿Para qué sirve?
+- Enviar peticiones HTTP (GET, POST, PATCH, DELETE) a cualquier endpoint
+- Organizar peticiones en colecciones reutilizables
+- Definir variables de entorno (ej. URL base, tokens)
+- Escribir tests automáticos que verifican el comportamiento de la API
+- Generar documentación de la API a partir de las colecciones
+- Compartir colecciones con el equipo
 
-**Pruebas realizadas en TaskFlow:**
+### ¿Por qué se usa?
+Durante el desarrollo de un backend es imprescindible poder probar los endpoints sin necesidad de tener el frontend terminado. Postman permite hacerlo de forma visual, organizada y documentada. También es fundamental para forzar casos de error (mandar un body inválido, usar un ID inexistente, etc.) que son difíciles de provocar desde la interfaz.
 
-| Petición | Resultado esperado |
-|---|---|
-| GET /api/v1/tasks | 200 OK — lista de tareas |
-| POST sin body | 400 Bad Request |
-| POST con texto corto | 400 Bad Request |
-| DELETE con id inexistente | 404 Not Found |
-| PATCH toggle con id inexistente | 404 Not Found |
-| GET con error simulado | 500 Internal Server Error |
-
----
-
-## Swagger 
-
-Swagger es un conjunto de herramientas construido sobre la especificación OpenAPI que 
-permite documentar APIs REST de forma interactiva. La documentación se genera 
-automáticamente a partir de comentarios JSDoc en el código.
-
-**¿Por qué se usa?**
-- La documentación siempre está sincronizada con el código real
-- Permite probar los endpoints directamente desde el navegador
-- Sirve como contrato entre el equipo frontend y backend
-- Facilita la incorporación de nuevos desarrolladores al proyecto
-
-**En TaskFlow:**
-Disponible en `http://localhost:3000/api/docs` con los 4 endpoints documentados:
-- `GET /api/v1/tasks` — obtener todas las tareas
-- `POST /api/v1/tasks` — crear una tarea
-- `DELETE /api/v1/tasks/:id` — eliminar una tarea
-- `PATCH /api/v1/tasks/:id/toggle` — alternar estado completado
+### Alternativas
+- **Thunder Client**: extensión de VS Code con funcionalidad similar, más ligera
+- **Insomnia**: similar a Postman, enfocado en simplicidad
+- **curl**: herramienta de línea de comandos, sin interfaz gráfica
 
 ---
 
 ## Sentry
 
-Sentry es una plataforma de monitorización de errores en tiempo real. Captura 
-automáticamente las excepciones que ocurren en producción y las agrupa, prioriza 
-y notifica al equipo de desarrollo.
+### ¿Qué es?
+Sentry es una plataforma de monitorización de errores en tiempo real para aplicaciones web y de backend. Captura automáticamente excepciones y errores en producción y los envía a un panel centralizado.
 
-**¿Por qué se usa?**
-- Los errores en producción se registran sin que el usuario tenga que reportarlos
-- Cada error incluye el stack trace completo, la URL y el historial de acciones del usuario
-- Envía alertas por correo o Slack cuando aparece un error nuevo
-- Mide tiempos de respuesta y detecta cuellos de botella en la API
+### ¿Para qué sirve?
+- Capturar errores no controlados en producción de forma automática
+- Ver el stack trace completo, el contexto del error y el usuario afectado
+- Recibir alertas por email o Slack cuando ocurre un error nuevo
+- Analizar la frecuencia y el impacto de cada error
+- Marcar errores como resueltos y hacer seguimiento de regresiones
 
-**Integración básica en Express:**
+### ¿Por qué se usa?
+En un entorno de producción no podemos estar mirando los logs del servidor constantemente. Sentry actúa como vigilante automático: cuando algo falla, te avisa al instante con toda la información necesaria para reproducir y solucionar el problema. Sin Sentry, muchos errores en producción pasarían desapercibidos hasta que un usuario se queja.
+
+### Ejemplo de integración básica en Express
+
 ```js
 const Sentry = require('@sentry/node');
 
-Sentry.init({ dsn: 'https://<tu-dsn>@sentry.io/<proyecto>' });
+Sentry.init({ dsn: 'TU_DSN_AQUI' });
 
+// Middleware de Sentry — debe ir antes de las rutas
 app.use(Sentry.Handlers.requestHandler());
-app.use('/api/v1/tasks', taskRoutes);
+
+// ... rutas ...
+
+// Middleware de errores de Sentry — debe ir antes del middleware de errores propio
 app.use(Sentry.Handlers.errorHandler());
 ```
+
+---
+
+## Swagger
+
+### ¿Qué es?
+Swagger (actualmente llamado **OpenAPI**) es un estándar para describir, documentar y visualizar APIs REST. En el ecosistema Node.js se usa habitualmente con las librerías `swagger-jsdoc` y `swagger-ui-express`.
+
+### ¿Para qué sirve?
+- Generar documentación interactiva de la API automáticamente desde comentarios en el código
+- Proporcionar una interfaz web donde cualquier persona puede ver y probar los endpoints
+- Definir el contrato de la API (qué parámetros acepta, qué devuelve, qué errores puede lanzar)
+- Facilitar la integración entre equipos de frontend y backend
+
+### ¿Por qué se usa?
+Sin documentación, el equipo de frontend no sabe cómo llamar a los endpoints: qué campos enviar, qué respuesta esperar o qué errores puede recibir. Swagger genera esa documentación de forma automática a partir del propio código, asegurando que siempre esté actualizada.
+
+### Cómo funciona en este proyecto
+
+Se usa `swagger-jsdoc` para definir los endpoints con comentarios JSDoc encima de cada ruta:
+
+```js
+/**
+ * @swagger
+ * /api/v1/tasks:
+ *   get:
+ *     summary: Obtener todas las tareas
+ *     responses:
+ *       200:
+ *         description: Lista de tareas
+ */
+router.get('/', taskController.obtenerTodas);
+```
+
+Y `swagger-ui-express` para servir la interfaz visual en `/api/docs`.
+
+### URL de la documentación en este proyecto
+
+```
+https://taskflow-project-arianafts-projects.vercel.app/api/docs
+```
+
+---
+
+## Resumen comparativo
+
+| Herramienta | Categoría | Cuándo se usa |
+|---|---|---|
+| **Axios** | Cliente HTTP | En el frontend o backend para hacer peticiones a APIs |
+| **Postman** | Testing / Documentación | Durante el desarrollo para probar y documentar endpoints |
+| **Sentry** | Monitorización | En producción para detectar y rastrear errores automáticamente |
+| **Swagger** | Documentación | Para generar y publicar la documentación interactiva de la API |

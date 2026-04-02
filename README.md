@@ -1,59 +1,111 @@
-# TaskFlow – TravelDream ✈️
+# ✈️ TaskFlow — Gestor de tareas de viaje
 
-Pequeña aplicación web para **planificar viajes** y gestionar una **lista de tareas**, desarrollada con **HTML**, **Tailwind CSS** y **JavaScript vanilla**. Me sirve como proyecto de práctica para buenas prácticas de JS, separación de capas y uso de `localStorage`.
+TaskFlow es una aplicación web para organizar y gestionar tareas antes de un viaje. Permite crear, completar y eliminar tareas a través de una interfaz visual conectada a una API REST propia.
 
+---
 
-## Funcionalidades
+## Descripción general
 
-- **Destinos**: tarjetas de París, Bali y Tokio con badges (`.badge`) y botones (`.btn-primary`).
-- **Tareas de viaje**:
-  - Añadir tareas con validación (no vacías, longitud máxima).
-  - Marcar tareas como completadas.
-  - Editar el texto de una tarea.
-  - Eliminar tareas individuales o todas las completadas.
-- **Filtros y ordenación**:
-  - Filtro por estado: todas / pendientes / completadas.
-  - Búsqueda por texto.
-  - Ordenar por: más recientes, más antiguas, alfabético A‑Z.
-- **Persistencia**: todas las tareas se guardan en `localStorage`.
-- **Modo oscuro**: toggle en el header, persistente entre sesiones.
+El proyecto está dividido en dos partes que trabajan juntas:
 
-## Estructura
+- **Frontend**: interfaz visual en HTML, CSS y JavaScript puro que consume la API mediante `fetch`.
+- **Backend**: servidor Node.js con Express que expone una API REST bajo `/api/v1/tasks`.
 
-- `index.html`: estructura principal, secciones de destinos y bloque de tareas (formulario, búsqueda, filtros, lista, contadores).
-- `input.css`: configuración de Tailwind + componentes con `@apply` (`.card`, `.badge`, `.btn-primary`).
-- `style.css`: CSS generado por Tailwind.
-- `tasks.js`: módulo `TaskStore` (estado y persistencia):
-  - `loadFromStorage`, `getTasks`, `addTask`, `deleteTask`, `toggleTaskCompleted`,
-  - `filterCompletedTasks`, `updateTaskText`, `clearCompleted`.
-- `tasks-ui.js`: capa de UI (DOM + eventos) para tareas:
-  - render de la lista, mensaje vacío, contador, filtros, ordenación, edición, eliminar completadas.
-- `theme.js`: gestión del modo oscuro (aplica clase `dark` y guarda preferencia).
+Ambas partes se despliegan como una única aplicación en Vercel.
 
-## Uso rápido
+---
 
-1. Abre `index.html` en el navegador.
-2. En **“Planifica tu viaje”**:
-   - Escribe una tarea (ej: `Reservar hotel en París`) y pulsa **“Añadir”**.
-   - Haz clic en el texto para marcarla como completada.
-   - Usa el buscador y los selectores de **Estado** y **Ordenar por** para filtrar/ordenar.
-   - Usa **“Eliminar completadas”** para limpiar las tareas hechas.
+## Tecnologías utilizadas
 
-## Arquitectura
+| Tecnología | Uso |
+|---|---|
+| HTML + CSS + JavaScript | Interfaz de usuario |
+| Tailwind CSS | Estilos del frontend |
+| Node.js | Entorno de ejecución del servidor |
+| Express | Framework del servidor HTTP |
+| cors | Gestión de peticiones entre orígenes |
+| dotenv | Variables de entorno |
+| swagger-jsdoc + swagger-ui-express | Documentación de la API |
+| Vercel | Despliegue del frontend y backend |
 
-- Frontend: HTML, CSS, JS
-- Backend: Node.js + Express
-- API REST: /api/v1/tasks
+---
 
-## Endpoints
+## Estructura del proyecto
 
-GET /tasks  
-POST /tasks  
-DELETE /tasks/:id  
+```
+taskflow-project/
+├── api/
+│   └── index.js          # Punto de entrada para Vercel (importa el servidor)
+├── network/
+│   └── client.js         # Capa de red del frontend (fetch a la API)
+├── server/
+│   └── src/
+│       ├── index.js              # Configuración de Express
+│       ├── config/
+│       │   ├── env.js            # Variables de entorno
+│       │   └── swagger.js        # Configuración de Swagger
+│       ├── controllers/
+│       │   └── task.controller.js
+│       ├── routes/
+│       │   └── task.routes.js
+│       └── services/
+│           └── task.service.js
+├── docs/
+│   └── backend-api.md    # Documentación de herramientas del backend
+├── index.html            # Frontend principal
+├── tasks-ui.js           # Lógica de presentación del frontend
+├── theme.js              # Toggle de modo oscuro
+├── vercel.json           # Configuración de rutas en Vercel
+└── README.md             # Este archivo
+```
 
-## Tecnologías
+---
 
-- Express
-- Fetch API
-- CORS
-- Nodemon
+## Instalación y ejecución local
+
+### Requisitos previos
+- Node.js v18 o superior
+- npm
+
+### Pasos
+
+```bash
+# 1. Clona el repositorio
+git clone https://github.com/tu-usuario/taskflow-project.git
+cd taskflow-project
+
+# 2. Instala las dependencias del servidor
+cd server
+npm install
+
+# 3. Crea el archivo de entorno
+cp .env.example .env
+# Edita .env y añade: PORT=3000
+
+# 4. Arranca el servidor en modo desarrollo
+npm run dev
+```
+
+Accede a la aplicación en: `http://localhost:3000`
+
+---
+
+## Despliegue en Vercel
+
+El proyecto está desplegado en Vercel y accesible en:
+
+- **Frontend**: https://taskflow-project-arianafts-projects.vercel.app/index.html
+- **API**: https://taskflow-project-arianafts-projects.vercel.app/api/v1/tasks
+- **Documentación Swagger**: https://taskflow-project-arianafts-projects.vercel.app/api/docs
+
+---
+
+## Documentación de la API
+
+La API está documentada con Swagger. Consulta la documentación interactiva en:
+
+```
+https://taskflow-project-arianafts-projects.vercel.app/api/docs
+```
+
+Para más detalles técnicos del servidor, consulta el [README del servidor](./server/README.md).
