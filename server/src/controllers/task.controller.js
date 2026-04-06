@@ -35,11 +35,19 @@ function toggleTask(req, res, next) {
     next(err);
   }
 }
-
+function toggleAll(req, res, next) {
+  try {
+    const tasks = taskService.toggleAll();
+    res.json(tasks);
+  } catch (err) {
+    next(err);
+  }
+}
 
 module.exports = {
   obtenerTodas,
   crearTarea,
   eliminarTarea,
   toggleTask,   
+  toggleAll
 };

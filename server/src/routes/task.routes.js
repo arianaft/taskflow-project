@@ -121,6 +121,9 @@ router.delete('/:id', taskController.eliminarTarea);
  *           application/json:
  *             example: { "error": "Tarea no encontrada" }
  */
+
+router.patch('/complete-all', taskController.toggleAll);
+router.get('/health', (req, res) => res.json({ ok: true }));
 router.patch('/:id/toggle', taskController.toggleTask);
 
 module.exports = router;

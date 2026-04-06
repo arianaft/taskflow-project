@@ -9,6 +9,7 @@ function crearTarea(data) {
     id: Date.now().toString(),
     text: data.text,
     completed: false,
+    createdAt: new Date().toISOString(),
   };
   tasks.push(nuevaTarea);
   return nuevaTarea;
@@ -27,9 +28,16 @@ function toggleTask(id) {
   return task;
 }
 
+function toggleAll() {
+  const hayPendientes = tasks.some(t => !t.completed);
+  tasks = tasks.map(t => ({ ...t, completed: hayPendientes }));
+  return tasks;
+}
+
 module.exports = {
   obtenerTodas,
   crearTarea,
   eliminarTarea,
-  toggleTask,   // ← también faltaba aquí
+  toggleTask, 
+  toggleAll  
 };
