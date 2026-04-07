@@ -2,7 +2,6 @@ const express    = require('express');
 const cors       = require('cors');
 const taskRoutes = require('./routes/task.routes');
 const { PORT }   = require('./config/env');
-const swaggerUi   = require('swagger-ui-express');
 const swaggerSpec = require('./config/swagger');
 
 const app = express();
@@ -23,7 +22,24 @@ const loggerAcademico = (req, res, next) => {
 };
 
 app.use(loggerAcademico);
-app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.get('/api/docs', (req, res) => {
+  const spec = JSON.stringify(swaggerSpec);
+  res.send(`<!DOCTYPE html>
+<html>
+<head>
+  <title>TaskFlow API Docs</title>
+  <meta charset="utf-8"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.11.0/swagger-ui.min.css">
+</head>
+<body>
+  <div id="swagger-ui"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.11.0/swagger-ui-bundle.js"></script>
+  <script>
+    SwaggerUIBundle({ spec: ${spec}, dom_id: '#swagger-ui' })
+  </script>
+</body>
+</html>`);
+});
 
 // Rutas 
 app.use('/api/v1/tasks', taskRoutes);
