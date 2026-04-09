@@ -226,7 +226,7 @@ async function handleListClick(e) {
   if (e.target.type === "checkbox") {
     e.target.disabled = true; 
     try {
-      await deleteTask(id);
+      await toggleTask(id);
      
       const task = allTasks.find(t => t.id === id);
       if (task) task.completed = !task.completed;

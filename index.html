@@ -160,18 +160,21 @@
 
       <div class="max-w-2xl mx-auto px-4">
         <div id="task-widget"
-          style="background:#fff; border-radius:16px; border:1px solid #e5e7eb; overflow:hidden; box-shadow:0 1px 4px rgba(0,0,0,0.06);">
+  style="border-radius:16px; overflow:hidden; box-shadow:0 1px 4px rgba(0,0,0,0.06);"
+  class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
 
           <!-- Fila 1: input + añadir + buscador -->
-          <div id="task-row-1" style="display:flex; align-items:center; gap:8px; padding:12px 16px; border-bottom:1px solid #f1f5f9;">
+         <div id="task-row-1" style="display:flex; align-items:center; gap:8px; padding:12px 16px;"
+  class="border-b border-gray-100 dark:border-gray-700">
             <form id="taskForm" style="display:flex; align-items:center; gap:8px; flex:1; min-width:0; margin:0;">
               <input
                 type="text"
                 id="taskInput"
                 placeholder="Ej: Reservar hotel"
-                style="flex:1; min-width:0; height:38px; border-radius:8px; border:1px solid #e5e7eb;
-                       padding:0 12px; font-size:13px; background:#f9fafb; color:#111827;
-                       outline:none; transition:border 0.15s;"
+                class="border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white"
+style="flex:1; min-width:0; height:38px; border-radius:8px;
+       padding:0 12px; font-size:13px;
+       outline:none; transition:border 0.15s;"
                 onfocus="this.style.boxShadow='0 0 0 3px rgba(99,102,241,0.15)'"
                 onblur="this.style.boxShadow='none'"
               >
@@ -194,9 +197,9 @@
                 <path stroke-linecap="round" d="M21 21l-4.35-4.35"/>
               </svg>
               <input type="text" id="searchTask" placeholder="Buscar tarea..."
-                style="width:160px; height:38px; padding:0 12px 0 32px; border-radius:8px;
-                       border:1px solid #e5e7eb; font-size:13px; background:#f9fafb; color:#111827;
-                       outline:none; transition:border 0.15s;"
+                class="border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white"
+style="width:160px; height:38px; padding:0 12px 0 32px; border-radius:8px;
+       font-size:13px; outline:none; transition:border 0.15s;"
                 onfocus="this.style.boxShadow='0 0 0 3px rgba(99,102,241,0.15)'"
                 onblur="this.style.boxShadow='none'"
               >
@@ -205,19 +208,22 @@
 
           <!-- Fila 2: filtros + acciones -->
           <div id="task-row-2"
-            style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap;
-                   gap:8px; padding:8px 16px; background:#f9fafb; border-bottom:1px solid #f1f5f9;">
+  class="bg-gray-50 dark:bg-gray-900 border-b border-gray-100 dark:border-gray-700"
+  style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap;
+         gap:8px; padding:8px 16px;">
             <div style="display:flex; gap:8px; align-items:center;">
               <select id="statusFilter"
-                style="height:30px; padding:0 8px; border-radius:6px; border:1px solid #e5e7eb;
-                       font-size:12px; background:#fff; color:#374151; cursor:pointer; outline:none;">
+                class="border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200"
+style="height:30px; padding:0 8px; border-radius:6px;
+       font-size:12px; cursor:pointer; outline:none;">
                 <option value="all">Todas</option>
                 <option value="pending">Pendientes</option>
                 <option value="completed">Completadas</option>
               </select>
               <select id="sortOrder"
-                style="height:30px; padding:0 8px; border-radius:6px; border:1px solid #e5e7eb;
-                       font-size:12px; background:#fff; color:#374151; cursor:pointer; outline:none;">
+                class="border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200"
+style="height:30px; padding:0 8px; border-radius:6px;
+       font-size:12px; cursor:pointer; outline:none;">
                 <option value="newest">Más recientes</option>
                 <option value="oldest">Más antiguas</option>
                 <option value="alphabetical">Alfabético</option>
@@ -259,7 +265,9 @@
           </p>
 
           <!-- Barra de progreso -->
-          <div id="task-footer" style="padding:10px 16px; background:#f9fafb; border-top:1px solid #f1f5f9; display:flex; align-items:center; gap:12px;">
+         <div id="task-footer"
+  class="bg-gray-50 dark:bg-gray-900 border-t border-gray-100 dark:border-gray-700"
+  style="padding:10px 16px; display:flex; align-items:center; gap:12px;">
             <span id="progress-label" style="font-size:11px; color:#9ca3af; white-space:nowrap;">Progreso actual</span>
             <div id="progress-track" style="flex:1; height:6px; background:#e5e7eb; border-radius:999px; overflow:hidden;">
               <div id="progressBar" style="width:0%; height:100%; background:#10b981; border-radius:999px; transition:width 0.5s ease;"></div>
